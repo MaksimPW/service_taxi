@@ -15,3 +15,9 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore custom
+config/database.yml
+.idea
+/public/uploads/
+config/secrets.yml
