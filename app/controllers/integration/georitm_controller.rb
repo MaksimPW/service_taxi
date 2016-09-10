@@ -29,11 +29,25 @@ class Integration::GeoritmController < ApplicationController
     }.to_json
 
     @response = post_api(@api_path, @body_json)
-    render json: @response
 
-    # 1 Пользователь авторизуется(запоминаются данные Auth Basic в сессии)
-    # 2 Программа получает параметры (speed, licenseNumber, SIM и тд.)
-    # 3 Программа сохраняет эти параметры в базе данных (у каждого car должен быть свой список состояний)
+    @statuses = JSON.parse(@response)
+
+    if session[:integration_georitm_basic_auth]
+      @statuses.each do |st|
+        StatusCar.create!(geo_lat: st["lat"],
+                          geo_lon: st["lon"],
+                          license_number: st["licenseNumber"],
+                          speed: st["speed"],
+                          fixed_time: st["lastPointDate"] || Time.now,
+                          name: st["name"],
+                          model: st["model"],
+                          id_car: st["id"],
+                          ext_id: st["extId"],
+                          course: st["course"])
+      end
+    end
+
+    render json: @response
   end
 
   private

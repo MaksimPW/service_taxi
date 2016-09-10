@@ -11,6 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160910143431) do
+
+  create_table "status_cars", force: :cascade do |t|
+    t.float    "geo_lat"
+    t.float    "geo_lon"
+    t.string   "license_number"
+    t.float    "speed"
+    t.datetime "fixed_time"
+    t.string   "name"
+    t.string   "model"
+    t.integer  "id_car"
+    t.integer  "ext_id"
+    t.integer  "course"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
 end
