@@ -3,6 +3,10 @@ class Integration::GeoritmController < ApplicationController
   require 'uri'
   require 'json'
 
+  def ping
+    render json: post_api('/restapi/ping/json', '')
+  end
+
   def init
     @api_path = '/restapi/users/login/json'
 
@@ -17,7 +21,7 @@ class Integration::GeoritmController < ApplicationController
     render json: @response
   end
 
-  def index
+  def execute
     @api_path = '/restapi/objects/obj-search/json'
 
     @body_json ={

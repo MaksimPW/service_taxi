@@ -37,10 +37,12 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'json_spec'
 end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'fakeweb'
 end
 
 group :development do
