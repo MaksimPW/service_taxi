@@ -10,6 +10,7 @@ class Integration::RadiotaxiController < ApplicationController
     sql = "SELECT * FROM RDB$RELATIONS;"
     cursor = ActiveRecord::Base.connection.execute(sql)
 
+    result = Array.new
     i = 0
     while row = cursor.fetch(:hash)
       result[i] = row
