@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       get 'georitm/init' => 'georitm#init'
       post 'georitm/execute' => 'georitm#execute'
 
-      get 'radiotaxi/init' => 'radiotaxi#init'
+      post 'radiotaxi/cars' => 'radiotaxi#cars'
+      post 'radiotaxi/drivers' => 'radiotaxi#drivers'
     end
   end
 end

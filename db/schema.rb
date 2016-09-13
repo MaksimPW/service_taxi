@@ -11,7 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910143431) do
+ActiveRecord::Schema.define(version: 20160913133856) do
+
+  create_table "cars", force: :cascade do |t|
+    t.string   "mark"
+    t.string   "license_number"
+    t.integer  "driver_id"
+    t.text     "description"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "cars", ["driver_id"], name: "index_cars_on_driver_id"
+
+  create_table "drivers", force: :cascade do |t|
+    t.string   "fio"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "status_cars", force: :cascade do |t|
     t.float    "geo_lat"
