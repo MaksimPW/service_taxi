@@ -5,36 +5,35 @@ class Integration::RadiotaxiController < ApplicationController
     sql = "SELECT zip, marka, nomer, zip_vod FROM AVTO;"
     cursor = ActiveRecord::Base.connection.execute(sql)
 
-    h = Hash.new
-    i = 0
+    h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
+    @i = 0
 
     while row = cursor.fetch(:hash)
       break if row['NAME'] =~ /e 13/
-
-      h[i]['id'] = row['zip']
-      h[i]['mark'] = row['marka']
-      h[i]['license_number'] = row['nomer']
-      h[i]['driver_id'] = row['zip_vod']
-      i+=1
+      h[@i]['id'] = row['zip']
+      h[@i]['mark'] = row['marka']
+      h[@i]['license_number'] = row['nomer']
+      h[@i]['driver_id'] = row['zip_vod']
+      @i+=1
     end
 
     cursor.close
     ActiveRecord::Base.remove_connection
     ActiveRecord::Base.establish_connection
 
-    h.each do |h|
-      if car = Car.where(id: h['id'])
-        car.save!(
-            mark: h['mark'],
-            license_number: h['license_number'],
-            driver_id: h['driver_id']
+    h.each do |index, key|
+      if car = Car.find_by(key['id'])
+        car.update!(
+            mark: key['mark'],
+            license_number: key['license_number'],
+            driver_id: key['driver_id']
         )
       else
         Car.create!(
-            id: h['id'],
-            mark: h['mark'],
-            license_number: h['license_number'],
-            driver_id: h['driver_id']
+            id: key['id'],
+            mark: key['mark'],
+            license_number: key['license_number'],
+            driver_id: key['driver_id']
         )
       end
     end
@@ -45,27 +44,26 @@ class Integration::RadiotaxiController < ApplicationController
     sql = "SELECT zip, fam_long, dop_info FROM PERSONEL;"
     cursor = ActiveRecord::Base.connection.execute(sql)
 
-    h = Hash.new
-    i = 0
+    h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
+    @i = 0
 
     while row = cursor.fetch(:hash)
       break if row['NAME'] =~ /e 13/
-      h = Hash.new
-      h['id'] = row['zip']
-      h['fio'] = row['fam_long']
-      h['description'] = row['dop_info']
-      i+=1
+      h[@i]['id'] = row['zip']
+      h[@i]['fio'] = row['fam_long']
+      h[@i]['description'] = row['dop_info']
+      @i+=1
     end
 
     cursor.close
     ActiveRecord::Base.remove_connection
     ActiveRecord::Base.establish_connection
 
-    h.each do |h|
-      if driver = Driver.where(id: h['id'])
-        driver.save!(fio: h['fio'], description: h['description'])
+    h.each do |index, key|
+      if driver = Driver.find_by(key['id'])
+        driver.update!(fio: key['fio'], description: key['description'])
       else
-        Driver.create!(fio: h['fio'], description: h['description'])
+        Driver.create!(fio: key['fio'], description: key['description'])
       end
     end
     render nothing: true
