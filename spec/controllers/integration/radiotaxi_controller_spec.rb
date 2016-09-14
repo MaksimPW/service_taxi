@@ -32,4 +32,20 @@ RSpec.describe Integration::RadiotaxiController, type: :controller do
       expect { post :drivers }.to_not change(Driver, :count)
     end
   end
+
+  describe 'POST /orders' do
+    it 'returns 200 status' do
+      post :orders, take_date: '2016-09-13'
+      expect(response.status).to eq 200
+    end
+
+    it 'saves the new Orders in the database' do
+      expect { post :orders, take_date: '2016-09-13' }.to change(Order, :count).by(6)
+    end
+
+    it 'does not create the new Orders after equal id value' do
+      post :orders
+      expect { post :cars, take_date: '2016-09-13' }.to_not change(Order, :count)
+    end
+  end
 end
