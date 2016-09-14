@@ -1,9 +1,8 @@
 class Integration::RadiotaxiController < ApplicationController
-  before_action :connect_db
 
   def cars
     sql = "SELECT zip, marka, nomer, zip_vod FROM AVTO;"
-    cursor = ActiveRecord::Base.connection.execute(sql)
+    cursor = Integration::RadiotaxiDb.connection.execute(sql)
 
     h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
     @i = 0
@@ -42,7 +41,7 @@ class Integration::RadiotaxiController < ApplicationController
 
   def drivers
     sql = "SELECT zip, fam_long, dop_info FROM PERSONEL;"
-    cursor = ActiveRecord::Base.connection.execute(sql)
+    cursor = Integration::RadiotaxiDb.connection.execute(sql)
 
     h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
     @i = 0
@@ -67,11 +66,5 @@ class Integration::RadiotaxiController < ApplicationController
       end
     end
     render nothing: true
-  end
-
-  private
-
-  def connect_db
-    ActiveRecord::Base.establish_connection "#{Rails.env}_integration_radiotaxi".to_sym
   end
 end
