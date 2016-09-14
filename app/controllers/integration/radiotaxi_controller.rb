@@ -17,8 +17,6 @@ class Integration::RadiotaxiController < ApplicationController
     end
 
     cursor.close
-    ActiveRecord::Base.remove_connection
-    ActiveRecord::Base.establish_connection
 
     h.each do |index, key|
       if car = Car.find_by(key['id'])
@@ -55,8 +53,6 @@ class Integration::RadiotaxiController < ApplicationController
     end
 
     cursor.close
-    ActiveRecord::Base.remove_connection
-    ActiveRecord::Base.establish_connection
 
     h.each do |index, key|
       if driver = Driver.find_by(key['id'])
