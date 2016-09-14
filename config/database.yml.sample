@@ -13,6 +13,15 @@ development:
   <<: *default
   database: db/development.sqlite3
 
+development_integration_radiotaxi:
+  <<: *default
+  adapter: fb
+  database: /var/lib/firebird/~/data/~
+  username: ~
+  password: ~
+  host: ~
+  encoding: cp1251
+
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
@@ -20,6 +29,24 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+test_integration_radiotaxi:
+  <<: *default
+  adapter: fb
+  database: /var/lib/firebird/~/data/~
+  username: ~
+  password: ~
+  host: ~
+  encoding: cp1251
+
 production:
   <<: *default
   database: db/production.sqlite3
+
+production_integration_radiotaxi:
+  <<: *default
+  adapter: fb
+  database: /var/lib/firebird/~/data/~
+  username: ~
+  password: ~
+  host: ~
+  encoding: cp1251

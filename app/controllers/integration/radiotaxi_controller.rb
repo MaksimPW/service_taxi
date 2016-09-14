@@ -72,13 +72,6 @@ class Integration::RadiotaxiController < ApplicationController
   private
 
   def connect_db
-    ActiveRecord::Base.establish_connection(
-        adapter: 'fb',
-        database: Rails.application.secrets.integration_radiotaxi_path,
-        username: Rails.application.secrets.integration_radiotaxi_login,
-        password: Rails.application.secrets.integration_radiotaxi_password,
-        host: Rails.application.secrets.integration_radiotaxi_host,
-        encoding: 'cp1251'
-    )
+    ActiveRecord::Base.establish_connection "#{Rails.env}_integration_radiotaxi".to_sym
   end
 end
