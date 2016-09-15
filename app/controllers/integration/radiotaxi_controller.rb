@@ -65,7 +65,6 @@ class Integration::RadiotaxiController < ApplicationController
   end
 
   def orders
-    params[:take_date] = '2015-11-12'
     sql = "SELECT * FROM ZAKAS WHERE data LIKE '%#{params[:take_date]}%';"
     cursor = Integration::RadiotaxiDb.connection.execute(sql)
 

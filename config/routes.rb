@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
       post 'radiotaxi/cars' => 'radiotaxi#cars'
       post 'radiotaxi/drivers' => 'radiotaxi#drivers'
-      post 'radiotaxi/orders' => 'radiotaxi#orders'
+      post 'radiotaxi/orders/:take_date' => 'radiotaxi#orders'
     end
   end
 end
