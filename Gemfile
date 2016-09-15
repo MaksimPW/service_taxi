@@ -26,6 +26,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'fb'
 gem 'activerecord-fb-adapter'
 gem 'devise'
+gem 'doorkeeper'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
