@@ -11,4 +11,12 @@ Rails.application.routes.draw do
     post 'radiotaxi/drivers' => 'radiotaxi#drivers'
     post 'radiotaxi/orders' => 'radiotaxi#orders'
   end
+
+  namespace :api do
+    namespace :v1 do
+      resources :api_waybills do
+        get :ping, on: :collection
+      end
+    end
+  end
 end
