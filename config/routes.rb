@@ -5,6 +5,10 @@ Rails.application.routes.draw do
       get 'georitm/ping' => 'georitm#ping'
       get 'georitm/init' => 'georitm#init'
       post 'georitm/execute' => 'georitm#execute'
+
+      post 'radiotaxi/cars' => 'radiotaxi#cars'
+      post 'radiotaxi/drivers' => 'radiotaxi#drivers'
+      post 'radiotaxi/orders/:take_date' => 'radiotaxi#orders'
     end
   end
 end
