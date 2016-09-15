@@ -15,12 +15,19 @@ describe 'Waybill API' do
     end
 
     context 'auth' do
+      before { get '/api/v1/api_waybills/ping', format: :json, access_token: access_token.token }
+
       let(:user) { FactoryGirl.create(:user) }
       let(:access_token) { FactoryGirl.create(:access_token) }
 
       it 'returns 200 status' do
-        get '/api/v1/api_waybills/ping', format: :json, access_token: access_token.token
         expect(response).to be_success
+      end
+
+      %w(version access).each do |attr|
+        it "contains #{attr}" do
+          expect(response.body).to have_json_path("#{attr}")
+        end
       end
     end
   end
