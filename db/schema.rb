@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160915205504) do
+ActiveRecord::Schema.define(version: 20160916042744) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -126,5 +126,18 @@ ActiveRecord::Schema.define(version: 20160915205504) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "waybills", force: :cascade do |t|
+    t.string   "waybill_number"
+    t.string   "car_number"
+    t.string   "creator"
+    t.string   "driver_alias"
+    t.string   "fio"
+    t.datetime "created_waybill_at"
+    t.datetime "begin_road_at"
+    t.datetime "end_road_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
 end
