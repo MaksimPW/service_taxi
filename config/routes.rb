@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :api_waybills do
+      resources :api_waybills, only: :create do
         get :ping, on: :collection
       end
     end
