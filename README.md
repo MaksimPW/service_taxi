@@ -96,17 +96,21 @@ development:
 
 ## Настройка
 
-Создать или изменить файл config/secrets.yml
+Создать или изменить файл config/database.yml
 Добавить в нужную среду исполнения ключи для подключения к базе данных радиотакси (значения не нужно заключать в кавычки).
 
 Пример:
+
 ```
-## config/secrets.yml
-development:
-  integration_radiotaxi_host: 127.0.0.1
-  integration_radiotaxi_path: /var/lib/firebird/2.5/data/test_rt.fdb
-  integration_radiotaxi_login: sysdba
-  integration_radiotaxi_password: masterkey
+## config/database.yml
+  development_integration_radiotaxi:
+    <<: *default
+    adapter: fb
+    database: /var/lib/firebird/2.5/data/test_rt.fdb
+    username: sysdba
+    password: masterkey
+    host: 127.0.0.1
+    encoding: cp1251
 ```
 
 # Тестирование
