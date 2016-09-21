@@ -28,6 +28,7 @@ gem 'activerecord-fb-adapter'
 gem 'devise'
 gem 'doorkeeper'
 gem 'rails_admin'
+gem 'paper_trail'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
