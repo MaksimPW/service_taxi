@@ -48,6 +48,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'fakeweb'
+  gem 'capybara'
 end
 
 group :development do
