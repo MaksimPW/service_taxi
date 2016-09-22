@@ -90,23 +90,30 @@ describe 'Waybill API' do
       let(:access_token) { FactoryGirl.create(:access_token) }
 
       it 'returns 200 status' do
-        patch "/api/v1/api_waybills/#{waybill.id}", id: waybill, waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
+        patch "/api/v1/api_waybills/#{waybill.id}", waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
         expect(response).to be_success
       end
 
       it 'assigns the requested waybill to waybill' do
-        patch "/api/v1/api_waybills/#{waybill.id}", id: waybill, waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
+        patch "/api/v1/api_waybills/#{waybill.id}", waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
         expect(assigns(:waybill)).to eq waybill
       end
 
       it 'changes waybill attributes' do
-        patch "/api/v1/api_waybills/#{waybill.id}", id: waybill, waybill: { fio: waybill_updated_fio }, format: :json, access_token: access_token.token
+        patch "/api/v1/api_waybills/#{waybill.id}", waybill: { fio: waybill_updated_fio }, format: :json, access_token: access_token.token
         waybill.reload
         expect(waybill.fio).to eq waybill_updated_fio
       end
 
       it 'does not change record count in the database' do
         expect { patch "/api/v1/api_waybills/#{waybill.id}", id: waybill, waybill: { fio: waybill_updated_fio }, format: :json, access_token: access_token.token }.to_not change(Waybill, :count)
+      end
+
+      %w(id waybill_number car_number creator driver_alias fio created_waybill_at begin_road_at end_road_at).each do |attr|
+        it "contains #{attr}" do
+          patch "/api/v1/api_waybills/#{waybill.id}", waybill: { fio: waybill_updated_fio }, format: :json, access_token: access_token.token
+          expect(response.body).to have_json_path("#{attr}")
+        end
       end
     end
   end

@@ -4,18 +4,12 @@ class Api::V1::ApiWaybillsController < Api::V1::BaseController
   end
 
   def create
-    @waybill = Waybill.new(waybill_params)
-    if @waybill.save
-      render json: @waybill
-    else
-      render json: { action: 'create', status: 'invalid', time: "#{Time.now}" }
-    end
+    respond_with(@waybill = Waybill.create(waybill_params), location: false)
   end
 
   def update
     @waybill = Waybill.find(params[:id])
-    @waybill.update(waybill_params)
-    render json: @waybill
+    render json: @waybill if @waybill.update(waybill_params)
   end
 
   private
