@@ -29,6 +29,7 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'rails_admin'
 gem 'paper_trail'
+gem 'geocoder'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160922144116) do
+=======
+ActiveRecord::Schema.define(version: 20160921142851) do
+>>>>>>> master
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -80,15 +84,17 @@ ActiveRecord::Schema.define(version: 20160922144116) do
     t.datetime "take_time"
     t.datetime "begin_time"
     t.datetime "end_time"
-    t.string   "begin_address_name"
-    t.string   "end_address_name"
-    t.float    "begin_geo"
-    t.float    "end_geo"
+    t.string   "begin_address"
+    t.string   "end_address"
     t.float    "cost"
     t.float    "distance"
     t.text     "description"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.float    "begin_lat"
+    t.float    "begin_lon"
+    t.float    "end_lat"
+    t.float    "end_lon"
   end
 
   add_index "orders", ["car_id"], name: "index_orders_on_car_id"

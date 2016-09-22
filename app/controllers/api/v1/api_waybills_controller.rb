@@ -1,21 +1,22 @@
-class Api::V1::ApiWaybillsController <  Api::V1::ApplicationController
+class Api::V1::ApiWaybillsController < Api::V1::BaseController
   def ping
     render json: { version: 'v1', access: 'true', time: "#{Time.now}" }
   end
 
   def create
-    @waybill = Waybill.new(strong_params)
-    if @waybill.save
-      render json: { action: 'create', status: 'success', time: "#{Time.now}" }
-    else
-      render json: { action: 'create', status: 'invalid', time: "#{Time.now}" }
-    end
+    respond_with(@waybill = Waybill.create(waybill_params), location: false)
+  end
+
+  def update
+    @waybill = Waybill.find(params[:id])
+    render json: @waybill if @waybill.update(waybill_params)
   end
 
   private
 
-  def strong_params
+  def waybill_params
     params.require(:waybill).permit(
+        :id,
         :waybill_number,
         :car_number,
         :creator,

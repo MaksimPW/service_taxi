@@ -81,10 +81,8 @@ class Integration::RadiotaxiController < ApplicationController
       h[@i]['take_time'] = row['time_zak']
       h[@i]['begin_time'] = row['time_vod']
       h[@i]['end_time'] = row['time_kon']
-      h[@i]['begin_address_name'] = row['adr_call']
-      h[@i]['end_address_name'] = row['adr_nazn']
-      #h[@i]['begin_geo'] = row['zip_avto']
-      #h[@i]['end_geo'] = row['dop_info']
+      h[@i]['begin_address'] = row['adr_call']
+      h[@i]['end_address'] = row['adr_nazn']
       h[@i]['cost'] = row['stoim']
       h[@i]['distance'] = row['probeg']
       #h[@i]['description'] = row['zip_avto']
@@ -104,10 +102,8 @@ class Integration::RadiotaxiController < ApplicationController
             take_time: key['take_time'],
             begin_time: key['begin_time'],
             end_time: key['end_time'],
-            begin_address_name: key['begin_address_name'],
-            end_address_name: key['end_address_name'],
-            #begin_geo
-            #end_geo
+            begin_address: key['begin_address'],
+            end_address: key['end_address'],
             cost: key['cost'],
             distance: key['distance'],
             #description
@@ -123,10 +119,8 @@ class Integration::RadiotaxiController < ApplicationController
             take_time: key['take_time'],
             begin_time: key['begin_time'],
             end_time: key['end_time'],
-            begin_address_name: key['begin_address_name'],
-            end_address_name: key['end_address_name'],
-            #begin_geo
-            #end_geo
+            begin_address: key['begin_address'],
+            end_address: key['end_address'],
             cost: key['cost'],
             distance: key['distance'],
             #description
