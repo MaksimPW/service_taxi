@@ -54,7 +54,28 @@ Content-Type: application/json
 
 ### Формат ответа
 
-`{ "action": "create", "status": "success", "time": "2016-09-19 00:00:00 +0300" }`
+`{"id"=>1, "waybill_number"=>"MyString", "car_number"=>"MyString", "creator"=>"", "driver_alias"=>"MyString", "fio"=>"Ivanov Ivan Ivanich", "created_waybill_at"=>"2016-09-16T07:27:44.000Z", "begin_road_at"=>"2016-09-16T10:00:00.000Z", "end_road_at"=>"2016-09-16T11:00:00.000Z", "created_at"=>"2016-09-22T15:13:24.268Z", "updated_at"=>"2016-09-22T15:13:24.268Z"}`
+
+## Запрос post update
+
+### Задача
+
+Обновляет путевой лист по id
+
+### Пример
+```
+PATCH /api/v1/api_waybills/1 HTTP/1.1
+Content-Type: application/json
+{"access_token": "SECRET_TOKEN_APPLICATION",
+  "waybill": {
+    "fio": "Test Testov Testovich",
+  }
+}
+```
+
+### Формат ответа
+
+`{"id"=>1, "waybill_number"=>"MyString", "car_number"=>"MyString", "creator"=>"", "driver_alias"=>"MyString", "fio"=>"Test Testov Testovich", "created_waybill_at"=>"2016-09-16T07:27:44.000Z", "begin_road_at"=>"2016-09-16T10:00:00.000Z", "end_road_at"=>"2016-09-16T11:00:00.000Z", "created_at"=>"2016-09-22T15:13:24.268Z", "updated_at"=>"2016-09-22T15:13:24.268Z"}`
 
 # Интеграция с георитм
 
