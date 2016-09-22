@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921191039) do
+ActiveRecord::Schema.define(version: 20160922144116) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -93,6 +93,17 @@ ActiveRecord::Schema.define(version: 20160921191039) do
 
   add_index "orders", ["car_id"], name: "index_orders_on_car_id"
   add_index "orders", ["driver_id"], name: "index_orders_on_driver_id"
+
+  create_table "settings", force: :cascade do |t|
+    t.float    "max_diff_between_actual_track"
+    t.integer  "max_rest_time_after_order"
+    t.integer  "max_park_distance_after_order"
+    t.integer  "max_rest_time"
+    t.integer  "max_park_time"
+    t.float    "max_diff_geo"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
 
   create_table "status_cars", force: :cascade do |t|
     t.float    "geo_lat"
