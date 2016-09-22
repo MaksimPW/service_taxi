@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  root 'rails_admin/main#dashboard'
+
   use_doorkeeper
   devise_for :users
-
-  root 'dummy#index'
 
   scope module: 'integration' do
     get 'georitm/ping' => 'georitm#ping'
