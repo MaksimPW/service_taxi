@@ -27,6 +27,7 @@ gem 'fb'
 gem 'activerecord-fb-adapter'
 gem 'devise'
 gem 'doorkeeper'
+gem 'geocoder'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
