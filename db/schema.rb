@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926151833) do
+ActiveRecord::Schema.define(version: 20160926165827) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20160926151833) do
     t.integer  "place_type_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "address"
   end
 
   add_index "places", ["place_type_id"], name: "index_places_on_place_type_id"
