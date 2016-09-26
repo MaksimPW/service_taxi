@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926075836) do
+ActiveRecord::Schema.define(version: 20160926080600) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -101,6 +101,17 @@ ActiveRecord::Schema.define(version: 20160926075836) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "places", force: :cascade do |t|
+    t.float    "lon"
+    t.float    "lat"
+    t.float    "radius"
+    t.integer  "place_type_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "places", ["place_type_id"], name: "index_places_on_place_type_id"
 
   create_table "settings", force: :cascade do |t|
     t.float    "max_diff_between_actual_track"
