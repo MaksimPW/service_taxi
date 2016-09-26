@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  root 'rails_admin/main#dashboard'
+
   use_doorkeeper
   devise_for :users
+
   scope module: 'integration' do
-    root 'georitm#init'
     get 'georitm/ping' => 'georitm#ping'
     get 'georitm/init' => 'georitm#init'
     post 'georitm/execute' => 'georitm#execute'

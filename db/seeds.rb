@@ -1,7 +1,12 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Пометка: При deployment приложения заменить значения user на правильные
+User.create(email: 'admin@admin.ru', password: 'admin@admin.ru', password_confirmation: 'admin@admin.ru')
+
+# Create default settings app
+Setting.create(
+    max_diff_between_actual_track: 10,
+    max_rest_time_after_order: 900,
+    max_park_distance_after_order: 500,
+    max_rest_time: 3600,
+    max_park_time: 25200,
+    max_diff_geo: 10,
+)

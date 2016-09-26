@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921142851) do
+ActiveRecord::Schema.define(version: 20160922144116) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -96,6 +96,17 @@ ActiveRecord::Schema.define(version: 20160921142851) do
   add_index "orders", ["car_id"], name: "index_orders_on_car_id"
   add_index "orders", ["driver_id"], name: "index_orders_on_driver_id"
 
+  create_table "settings", force: :cascade do |t|
+    t.float    "max_diff_between_actual_track"
+    t.integer  "max_rest_time_after_order"
+    t.integer  "max_park_distance_after_order"
+    t.integer  "max_rest_time"
+    t.integer  "max_park_time"
+    t.float    "max_diff_geo"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
   create_table "status_cars", force: :cascade do |t|
     t.float    "geo_lat"
     t.float    "geo_lon"
@@ -128,6 +139,29 @@ ActiveRecord::Schema.define(version: 20160921142851) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "version_associations", force: :cascade do |t|
+    t.integer "version_id"
+    t.string  "foreign_key_name", null: false
+    t.integer "foreign_key_id"
+  end
+
+  add_index "version_associations", ["foreign_key_name", "foreign_key_id"], name: "index_version_associations_on_foreign_key"
+  add_index "version_associations", ["version_id"], name: "index_version_associations_on_version_id"
+
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",                         null: false
+    t.integer  "item_id",                           null: false
+    t.string   "event",                             null: false
+    t.string   "whodunnit"
+    t.text     "object",         limit: 1073741823
+    t.datetime "created_at"
+    t.text     "object_changes", limit: 1073741823
+    t.integer  "transaction_id"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id"
 
   create_table "waybills", force: :cascade do |t|
     t.string   "waybill_number"

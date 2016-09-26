@@ -27,6 +27,8 @@ gem 'fb'
 gem 'activerecord-fb-adapter'
 gem 'devise'
 gem 'doorkeeper'
+gem 'rails_admin'
+gem 'paper_trail'
 gem 'geocoder'
 
 # Use ActiveModel has_secure_password
@@ -49,6 +51,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'fakeweb'
+  gem 'capybara'
 end
 
 group :development do
