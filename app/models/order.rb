@@ -1,4 +1,6 @@
 class Order < ActiveRecord::Base
+  belongs_to :order_type
+
   before_save :define_geodata
 
   private
