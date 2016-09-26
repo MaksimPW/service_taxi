@@ -15,3 +15,5 @@ PlaceType.create(id: 1, name: 'Парк')
 PlaceType.create(id: 2, name: 'Метро')
 PlaceType.create(id: 3, name: 'АЗС')
 PlaceType.create(id: 4, name: 'Место ожидания первого заказа')
+
+OrderType.create(id: 1, name: 'Поездка из парка до места ожидания первого заказа')
