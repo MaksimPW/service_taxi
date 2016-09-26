@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160922144116) do
-=======
-ActiveRecord::Schema.define(version: 20160921142851) do
->>>>>>> master
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
