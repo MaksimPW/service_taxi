@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926165827) do
+ActiveRecord::Schema.define(version: 20160927181256) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -141,12 +141,14 @@ ActiveRecord::Schema.define(version: 20160926165827) do
     t.datetime "fixed_time"
     t.string   "name"
     t.string   "model"
-    t.integer  "id_car"
     t.integer  "ext_id"
     t.integer  "course"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "car_id"
   end
+
+  add_index "status_cars", ["car_id"], name: "index_status_cars_on_car_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
