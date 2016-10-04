@@ -8,6 +8,25 @@ class Order < ActiveRecord::Base
     StatusCar.where{(fixed_time > o.take_time) & (fixed_time < o.end_time) & (car_id = o.car_id)}.pluck(:id)
   end
 
+  # Now: inspection-1
+  # TODO: Add more inspections;
+  def define_type
+    # Define track
+    @track_place = Array.new
+    @track = self.define_track
+    unless @track.empty?
+      @track_place[0] = StatusCar.find(@track.first).get_places
+      @track_place[1] = StatusCar.find(@track.last).get_places
+    end
+
+    # Check order type
+    if (@track_place[0].include? 1) && (@track_place[1].include? 4)
+      self.order_type_id = 1
+    else
+      false
+    end
+  end
+
   private
 
   def define_geodata
