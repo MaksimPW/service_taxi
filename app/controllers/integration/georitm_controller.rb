@@ -41,7 +41,7 @@ class Integration::GeoritmController < ApplicationController
                           fixed_time: st["lastPointDate"] || Time.now,
                           name: st["name"],
                           model: st["model"],
-                          id_car: st["id"],
+                          car_id: st["id"],
                           ext_id: st["extId"],
                           course: st["course"])
       end

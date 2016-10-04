@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160922144116) do
+ActiveRecord::Schema.define(version: 20160927181256) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -72,6 +72,12 @@ ActiveRecord::Schema.define(version: 20160922144116) do
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true
 
+  create_table "order_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer  "car_id"
     t.integer  "driver_id"
@@ -91,10 +97,30 @@ ActiveRecord::Schema.define(version: 20160922144116) do
     t.float    "begin_lon"
     t.float    "end_lat"
     t.float    "end_lon"
+    t.integer  "order_type_id"
   end
 
   add_index "orders", ["car_id"], name: "index_orders_on_car_id"
   add_index "orders", ["driver_id"], name: "index_orders_on_driver_id"
+  add_index "orders", ["order_type_id"], name: "index_orders_on_order_type_id"
+
+  create_table "place_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.float    "lon"
+    t.float    "lat"
+    t.float    "radius"
+    t.integer  "place_type_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "address"
+  end
+
+  add_index "places", ["place_type_id"], name: "index_places_on_place_type_id"
 
   create_table "settings", force: :cascade do |t|
     t.float    "max_diff_between_actual_track"
@@ -115,12 +141,14 @@ ActiveRecord::Schema.define(version: 20160922144116) do
     t.datetime "fixed_time"
     t.string   "name"
     t.string   "model"
-    t.integer  "id_car"
     t.integer  "ext_id"
     t.integer  "course"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "car_id"
   end
+
+  add_index "status_cars", ["car_id"], name: "index_status_cars_on_car_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
