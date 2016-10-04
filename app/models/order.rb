@@ -3,6 +3,11 @@ class Order < ActiveRecord::Base
 
   before_save :define_geodata
 
+  def define_track
+    o = self
+    StatusCar.where{(fixed_time > o.take_time) & (fixed_time < o.end_time) & (car_id = o.car_id)}.pluck(:id)
+  end
+
   private
 
   def define_geodata
