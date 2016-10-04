@@ -5,6 +5,6 @@ class Place < ActiveRecord::Base
   after_save :geocode, :unless => :address_empty?
 
   def address_empty?
-    address.empty?
+    address.nil? || address.empty?
   end
 end
