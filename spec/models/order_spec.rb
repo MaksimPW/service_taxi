@@ -10,12 +10,12 @@ RSpec.describe Order, type: :model do
   end
 
   context '#define_track' do
-    let(:car) { FactoryGirl.create(:car) }
-    let!(:status1) { FactoryGirl.create(:status_car, car_id: car.id, fixed_time: Time.now - 5.hours) }
-    let!(:status2) { FactoryGirl.create(:status_car, car_id: car.id, fixed_time: Time.now - 3.hours) }
-    let!(:status3) { FactoryGirl.create(:status_car, car_id: car.id, fixed_time: Time.now - 1.hour) }
-    let!(:status_outside) { FactoryGirl.create(:status_car, car_id: car.id, fixed_time: Time.now - 24.hours) }
-    let!(:order) { FactoryGirl.create(:order, take_time: Time.now - 6.hours, end_time: Time.now, car_id: car.id) }
+    let(:car) { create(:car) }
+    let!(:status1) { create(:status_car, car_id: car.id, fixed_time: Time.now - 5.hours) }
+    let!(:status2) { create(:status_car, car_id: car.id, fixed_time: Time.now - 3.hours) }
+    let!(:status3) { create(:status_car, car_id: car.id, fixed_time: Time.now - 1.hour) }
+    let!(:status_outside) { create(:status_car, car_id: car.id, fixed_time: Time.now - 24.hours) }
+    let!(:order) { create(:order, take_time: Time.now - 6.hours, end_time: Time.now, car_id: car.id) }
 
     it 'should receive' do
       expect(order).to receive(:define_track)
@@ -29,8 +29,9 @@ RSpec.describe Order, type: :model do
   end
 
   context '#define_type' do
-    let(:car) { FactoryGirl.create(:car) }
-    let(:order) { FactoryGirl.create(:order, take_time: Time.now - 5.hours, end_time: Time.now, car_id: car.id) }
+    let!(:setting) { create(:setting) }
+    let(:car) { create(:car) }
+    let(:order) { create(:order, take_time: Time.now - 5.hours, end_time: Time.now, car_id: car.id) }
 
     it 'should receive' do
       expect(order).to receive(:define_type)
@@ -38,20 +39,20 @@ RSpec.describe Order, type: :model do
     end
 
     context 'inspection-1 | Поездка из парка до места ожидания первого заказа' do
-      let!(:park_place) { FactoryGirl.create(:place, place_type_id: 1, address: 'Репищева, 20 лит А, Питер', lon: nil, lat: nil, radius: 1) }
-      let!(:between_place) { FactoryGirl.create(:place, place_type_id: nil, address: 'Метро Московская, Питер', radius: 1) }
-      let!(:wait_place) { FactoryGirl.create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
-      let!(:status1) { FactoryGirl.create(:status_car,
+      let!(:park_place) { create(:place, place_type_id: 1, address: 'Репищева, 20 лит А, Питер', lon: nil, lat: nil, radius: 1) }
+      let!(:between_place) { create(:place, place_type_id: nil, address: 'Метро Московская, Питер', radius: 1) }
+      let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
+      let!(:status1) { create(:status_car,
                                          car_id: car.id,
                                          geo_lat: park_place.lat,
                                          geo_lon: park_place.lon,
                                          fixed_time: Time.now - 4.hours - 50.minutes) }
-      let!(:status2) { FactoryGirl.create(:status_car,
+      let!(:status2) { create(:status_car,
                                          car_id: car.id,
                                          geo_lat: between_place.lat,
                                          geo_lon: between_place.lon,
                                          fixed_time: Time.now - 2.hours) }
-      let!(:status3) { FactoryGirl.create(:status_car,
+      let!(:status3) { create(:status_car,
                                           car_id: car.id,
                                           geo_lat: wait_place.lat,
                                           geo_lon: wait_place.lon,
@@ -60,6 +61,28 @@ RSpec.describe Order, type: :model do
       it 'return 1' do
         order.define_type
         expect(order.order_type_id).to eq 1
+      end
+    end
+
+    context 'inspection-2 | Поездка от ожидания заказа к месту подачи' do
+      # Узнать, есть ли в Setting настройки по отдаленности о места подачи
+      # Даже если есть, проверять такие дела лучше в отдельных тестах, так как если мы будем выставлять конкретные отдаленности значения, то эти тесты могут упасть
+      let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
+      let!(:order) { create(:order, car_id: car.id, take_time: 5.hours.ago, end_time: 1.hour.ago, begin_address: 'Московская, Питер, город Санкт-Петербург, Россия') }
+      let!(:status1) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: wait_place.lat,
+                              geo_lon: wait_place.lon,
+                              fixed_time: Time.now - 4.hours - 50.minutes ) }
+      let!(:status2) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: order.begin_lat,
+                              geo_lon: order.begin_lon,
+                              fixed_time: Time.now - 1.hour - 10.minutes ) }
+
+      it 'return 2' do
+        order.define_type
+        expect(order.order_type_id).to eq 2
       end
     end
   end

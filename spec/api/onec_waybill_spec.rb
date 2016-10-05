@@ -17,8 +17,8 @@ describe 'Waybill API' do
     context 'auth' do
       before { get '/api/v1/api_waybills/ping', format: :json, access_token: access_token.token }
 
-      let(:user) { FactoryGirl.create(:user) }
-      let(:access_token) { FactoryGirl.create(:access_token) }
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token) }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -33,7 +33,7 @@ describe 'Waybill API' do
   end
 
   describe 'POST /create' do
-    let(:waybill) { FactoryGirl.create(:waybill) }
+    let(:waybill) { create(:waybill) }
 
     context 'unauth' do
       it 'returns 401 status if there is no access_token' do
@@ -48,10 +48,10 @@ describe 'Waybill API' do
     end
 
     context 'auth' do
-      before { post '/api/v1/api_waybills', { format: :json, waybill: FactoryGirl.attributes_for(:waybill), access_token: access_token.token } }
+      before { post '/api/v1/api_waybills', { format: :json, waybill: attributes_for(:waybill), access_token: access_token.token } }
 
-      let(:user) { FactoryGirl.create(:user) }
-      let(:access_token) { FactoryGirl.create(:access_token) }
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token) }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -64,13 +64,13 @@ describe 'Waybill API' do
       end
 
       it 'saves the new Waybill in the database' do
-        expect { post '/api/v1/api_waybills', { format: :json, waybill: FactoryGirl.attributes_for(:waybill), access_token: access_token.token } }.to change(Waybill, :count).by(1)
+        expect { post '/api/v1/api_waybills', { format: :json, waybill: attributes_for(:waybill), access_token: access_token.token } }.to change(Waybill, :count).by(1)
       end
     end
   end
 
   describe 'PATCH /update' do
-    let!(:waybill) { FactoryGirl.create(:waybill) }
+    let!(:waybill) { create(:waybill) }
     let(:waybill_updated_fio) { waybill.fio = 'Test Testov Testovich' }
 
     context 'unauth' do
@@ -86,16 +86,16 @@ describe 'Waybill API' do
     end
 
     context 'auth' do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:access_token) { FactoryGirl.create(:access_token) }
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token) }
 
       it 'returns 200 status' do
-        patch "/api/v1/api_waybills/#{waybill.id}", waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
+        patch "/api/v1/api_waybills/#{waybill.id}", waybill: attributes_for(:waybill), format: :json, access_token: access_token.token
         expect(response).to be_success
       end
 
       it 'assigns the requested waybill to waybill' do
-        patch "/api/v1/api_waybills/#{waybill.id}", waybill: FactoryGirl.attributes_for(:waybill), format: :json, access_token: access_token.token
+        patch "/api/v1/api_waybills/#{waybill.id}", waybill: attributes_for(:waybill), format: :json, access_token: access_token.token
         expect(assigns(:waybill)).to eq waybill
       end
 

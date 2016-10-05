@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Place, type: :model do
   context '#geocode' do
-    let(:subject) { FactoryGirl.create(:place, address: 'St. Petersburg', lon: nil, lat: nil) }
+    let(:subject) { create(:place, address: 'St. Petersburg', lon: nil, lat: nil) }
 
     it 'should receive if address' do
       expect(subject).to receive(:geocode)

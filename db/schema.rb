@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927181256) do
+ActiveRecord::Schema.define(version: 20161005011417) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20160927181256) do
   create_table "settings", force: :cascade do |t|
     t.float    "max_diff_between_actual_track"
     t.integer  "max_rest_time_after_order"
-    t.integer  "max_park_distance_after_order"
+    t.float    "max_park_distance_after_order"
     t.integer  "max_rest_time"
     t.integer  "max_park_time"
     t.float    "max_diff_geo"
