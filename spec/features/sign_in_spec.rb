@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'User sign in' do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
 
   scenario 'Registered user try to sign in' do
     visit new_user_session_path
