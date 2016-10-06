@@ -38,35 +38,6 @@ RSpec.describe Order, type: :model do
       order.define_type
     end
 
-    context 'inspection for distance' do
-      let!(:order) { create(:order,
-                            take_time: Time.now - 6.hours,
-                            end_time: Time.now,
-                            car_id: car.id,
-                            begin_address: 'МО №17 "Шувалово-Озерки", Питер',
-                            end_address: 'Северный проспект, 60 к1, Питер') }
-      let!(:status1) { create(:status_car,
-                              car_id: car.id,
-                              geo_lat: order.begin_lat,
-                              geo_lon: order.begin_lon,
-                              fixed_time: Time.now - 5.hours - 40.minutes) }
-      let!(:status2) { create(:status_car,
-                              car_id: car.id,
-                              geo_lat: 60.1255121,
-                              geo_lon: 30.3888101,
-                              fixed_time: 2.hours.ago) }
-      let!(:status3) { create(:status_car,
-                              car_id: car.id,
-                              geo_lat: order.end_lat,
-                              geo_lon: order.end_lon,
-                              fixed_time: 25.minutes.ago) }
-
-      it 'return 4' do
-        order.define_type
-        expect(order.order_type_id).to eq 4
-      end
-    end
-
     context 'inspection-1 | Поездка из парка до места ожидания первого заказа' do
       let!(:order) { create(:order,
                             take_time: Time.now - 5.hours,
@@ -143,6 +114,35 @@ RSpec.describe Order, type: :model do
       it 'return 3' do
         order.define_type
         expect(order.order_type_id).to eq 3
+      end
+    end
+
+    context 'inspection-4 | inspection for distance' do
+      let!(:order) { create(:order,
+                            take_time: Time.now - 6.hours,
+                            end_time: Time.now,
+                            car_id: car.id,
+                            begin_address: 'МО №17 "Шувалово-Озерки", Питер',
+                            end_address: 'Северный проспект, 60 к1, Питер') }
+      let!(:status1) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: order.begin_lat,
+                              geo_lon: order.begin_lon,
+                              fixed_time: Time.now - 5.hours - 40.minutes) }
+      let!(:status2) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: 60.1255121,
+                              geo_lon: 30.3888101,
+                              fixed_time: 2.hours.ago) }
+      let!(:status3) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: order.end_lat,
+                              geo_lon: order.end_lon,
+                              fixed_time: 25.minutes.ago) }
+
+      it 'return 4' do
+        order.define_type
+        expect(order.order_type_id).to eq 4
       end
     end
   end
