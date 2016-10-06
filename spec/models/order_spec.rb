@@ -145,5 +145,12 @@ RSpec.describe Order, type: :model do
         expect(order.order_type_id).to eq 4
       end
     end
+
+    context 'inspection-5 | track one' do
+      it 'return 5' do
+        order.define_type
+        expect(order.order_type_id).to eq 5
+      end
+    end
   end
 end

@@ -20,3 +20,4 @@ OrderType.create(id: 1, name: 'Поездка из парка до места о
 OrderType.create(id: 2, name: 'Поездка от ожидания заказа к месту подачи')
 OrderType.create(id: 3, name: 'Поездка по заказу')
 OrderType.create(id: 4, name: 'Превышен лимит по дистанции')
+OrderType.create(id: 5, name: 'Трек один или отсутствует')

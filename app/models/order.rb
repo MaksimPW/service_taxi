@@ -20,8 +20,9 @@ class Order < ActiveRecord::Base
     @track_place = Array.new
     @track = self.define_track
 
-    # TODO: Написать тесты на то, что будет происходить, если @track.empty или @track.count == 1 Вернуть ошибку в лог
-    unless @track.empty? || @track.count == 1
+    if @track.empty? || @track.count == 1
+      return self.order_type_id = 5
+    else
       track_first = StatusCar.find(@track.first)
       track_last = StatusCar.find(@track.last)
 
