@@ -12,13 +12,17 @@ class Order < ActiveRecord::Base
   # List:
   # inspection-1
   # inspection-2
+  # inspection-3
+  # inspection-4
 
   def define_type
     # Define track
     @track_place = Array.new
     @track = self.define_track
 
-    unless @track.empty?
+    if @track.empty? || @track.count == 1
+      return self.order_type_id = 5
+    else
       track_first = StatusCar.find(@track.first)
       track_last = StatusCar.find(@track.last)
 
@@ -42,11 +46,21 @@ class Order < ActiveRecord::Base
       end
     end
 
+    @actual_distance = Inspection.summary_build_route(@track)["length"]
+    if @actual_distance > self.distance
+        different_percent = (100 - self.distance.to_f/@actual_distance.to_f*100)
+        if different_percent > Setting.first.max_diff_between_actual_track
+         return self.order_type_id = 4
+       end
+    end
+
     # Check order type
     if (@track_place[0].include? 1) && (@track_place[1].include? 4)
       self.order_type_id = 1
     elsif (@track_place[0].include? 4) && (@track_place[1].include? 'begin_address')
       self.order_type_id = 2
+    elsif (@track_place[0].include? 'begin_address') && (@track_place[1].include? 'end_address')
+      self.order_type_id = 3
     else
       false
     end
