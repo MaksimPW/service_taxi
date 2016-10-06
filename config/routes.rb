@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   use_doorkeeper
   devise_for :users
 
+  resources :orders, only: [:index, :show]
+
   scope module: 'integration' do
     get 'georitm/ping' => 'georitm#ping'
     get 'georitm/init' => 'georitm#init'
