@@ -38,25 +38,55 @@ RSpec.describe Order, type: :model do
       order.define_type
     end
 
-    context 'inspection-1 | Поездка из парка до места ожидания первого заказа' do
-      let!(:park_place) { create(:place, place_type_id: 1, address: 'Репищева, 20 лит А, Питер', lon: nil, lat: nil, radius: 1) }
-      let!(:between_place) { create(:place, place_type_id: nil, address: 'Метро Московская, Питер', radius: 1) }
-      let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
+    context 'inspection for distance' do
+      let!(:order) { create(:order,
+                            take_time: Time.now - 6.hours,
+                            end_time: Time.now,
+                            car_id: car.id,
+                            begin_address: 'МО №17 "Шувалово-Озерки", Питер',
+                            end_address: 'Северный проспект, 60 к1, Питер') }
       let!(:status1) { create(:status_car,
-                                         car_id: car.id,
-                                         geo_lat: park_place.lat,
-                                         geo_lon: park_place.lon,
-                                         fixed_time: Time.now - 4.hours - 50.minutes) }
+                              car_id: car.id,
+                              geo_lat: order.begin_lat,
+                              geo_lon: order.begin_lon,
+                              fixed_time: Time.now - 5.hours - 40.minutes) }
       let!(:status2) { create(:status_car,
-                                         car_id: car.id,
-                                         geo_lat: between_place.lat,
-                                         geo_lon: between_place.lon,
-                                         fixed_time: Time.now - 2.hours) }
+                              car_id: car.id,
+                              geo_lat: 60.1255121,
+                              geo_lon: 30.3888101,
+                              fixed_time: 2.hours.ago) }
       let!(:status3) { create(:status_car,
-                                          car_id: car.id,
-                                          geo_lat: wait_place.lat,
-                                          geo_lon: wait_place.lon,
-                                          fixed_time: Time.now - 20.minutes) }
+                              car_id: car.id,
+                              geo_lat: order.end_lat,
+                              geo_lon: order.end_lon,
+                              fixed_time: 25.minutes.ago) }
+
+      it 'return 4' do
+        order.define_type
+        expect(order.order_type_id).to eq 4
+      end
+    end
+
+    context 'inspection-1 | Поездка из парка до места ожидания первого заказа' do
+      let!(:order) { create(:order,
+                            take_time: Time.now - 5.hours,
+                            end_time: Time.now,
+                            car_id: car.id,
+                            begin_address: 'Репищева, 20 лит А, Питер',
+                            end_address: 'Метро Московская, Питер',
+                            distance: 23.575) }
+      let!(:park_place) { create(:place, place_type_id: 1, address: 'Репищева, 20 лит А, Питер', lon: nil, lat: nil, radius: 1) }
+      let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', lon: nil, lat: nil, radius: 1) }
+      let!(:status1) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: park_place.lat,
+                              geo_lon: park_place.lon,
+                              fixed_time: Time.now - 4.hours - 50.minutes) }
+      let!(:status2) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: wait_place.lat,
+                              geo_lon: wait_place.lon,
+                              fixed_time: Time.now - 20.minutes) }
 
       it 'return 1' do
         order.define_type
@@ -68,7 +98,12 @@ RSpec.describe Order, type: :model do
       # TODO: Узнать, есть ли в Setting настройки по отдаленности о места подачи
       # TODO: Даже если есть, проверять такие дела лучше в отдельных тестах, так как если мы будем выставлять конкретные отдаленности значения, то эти тесты могут упасть
       let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
-      let!(:order) { create(:order, car_id: car.id, take_time: 5.hours.ago, end_time: 1.hour.ago, begin_address: 'Московская, Питер, город Санкт-Петербург, Россия') }
+      let!(:order) { create(:order,
+                            car_id: car.id,
+                            take_time: 5.hours.ago,
+                            end_time: 1.hour.ago,
+                            begin_address: 'Московская, Питер, город Санкт-Петербург, Россия',
+                            distance: 1.5) }
       let!(:status1) { create(:status_car,
                               car_id: car.id,
                               geo_lat: wait_place.lat,
@@ -83,6 +118,31 @@ RSpec.describe Order, type: :model do
       it 'return 2' do
         order.define_type
         expect(order.order_type_id).to eq 2
+      end
+    end
+
+    context 'inspection-3 | Поездка по заказу' do
+      let!(:order) { create(:order,
+                            take_time: Time.now - 6.hours,
+                            end_time: Time.now,
+                            car_id: car.id,
+                            begin_address: 'МО №17 "Шувалово-Озерки", Питер',
+                            end_address: 'Северный проспект, 60 к1, Питер',
+                            distance: 13) }
+      let!(:status1) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: order.begin_lat,
+                              geo_lon: order.begin_lon,
+                              fixed_time: Time.now - 5.hours - 40.minutes) }
+      let!(:status2) { create(:status_car,
+                              car_id: car.id,
+                              geo_lat: order.end_lat,
+                              geo_lon: order.end_lon,
+                              fixed_time: 25.minutes.ago) }
+
+      it 'return 3' do
+        order.define_type
+        expect(order.order_type_id).to eq 3
       end
     end
   end
