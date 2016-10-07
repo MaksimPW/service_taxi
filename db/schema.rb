@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161007222209) do
+ActiveRecord::Schema.define(version: 20161007225137) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -149,6 +149,21 @@ ActiveRecord::Schema.define(version: 20161007222209) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "tracks", force: :cascade do |t|
+    t.text     "note"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "order_id"
+    t.integer  "track_type_id"
+    t.integer  "car_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "tracks", ["car_id"], name: "index_tracks_on_car_id"
+  add_index "tracks", ["order_id"], name: "index_tracks_on_order_id"
+  add_index "tracks", ["track_type_id"], name: "index_tracks_on_track_type_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
