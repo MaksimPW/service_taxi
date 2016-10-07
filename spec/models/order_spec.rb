@@ -72,7 +72,7 @@ RSpec.describe Order, type: :model do
                             take_time: 5.hours.ago,
                             end_time: 1.hour.ago,
                             begin_address: 'Московская, Питер, город Санкт-Петербург, Россия',
-                            distance: 1.5) }
+                            distance: 2.144) }
       let!(:status1) { create(:status_car,
                               car_id: car.id,
                               geo_lat: wait_place.lat,
