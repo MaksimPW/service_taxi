@@ -66,15 +66,13 @@ RSpec.describe Order, type: :model do
     end
 
     context 'inspection-2 | Поездка от ожидания заказа к месту подачи' do
-      # TODO: Узнать, есть ли в Setting настройки по отдаленности о места подачи
-      # TODO: Даже если есть, проверять такие дела лучше в отдельных тестах, так как если мы будем выставлять конкретные отдаленности значения, то эти тесты могут упасть
       let!(:wait_place) { create(:place, place_type_id: 4, address: 'Пулковское шоссе, 43 к1, Питер', radius: 1) }
       let!(:order) { create(:order,
                             car_id: car.id,
                             take_time: 5.hours.ago,
                             end_time: 1.hour.ago,
                             begin_address: 'Московская, Питер, город Санкт-Петербург, Россия',
-                            distance: 1.5) }
+                            distance: 2.144) }
       let!(:status1) { create(:status_car,
                               car_id: car.id,
                               geo_lat: wait_place.lat,

@@ -38,4 +38,9 @@ RailsAdmin.config do |config|
     history_index
     history_show
   end
+
+  config.navigation_static_label = 'Maps'
+  config.navigation_static_links = {
+      'Order' => '/orders'
+  }
 end

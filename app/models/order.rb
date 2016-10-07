@@ -8,13 +8,6 @@ class Order < ActiveRecord::Base
     StatusCar.where{(fixed_time > o.take_time) & (fixed_time < o.end_time) & (car_id = o.car_id)}.pluck(:id)
   end
 
-  # TODO: Add more inspections
-  # List:
-  # inspection-1
-  # inspection-2
-  # inspection-3
-  # inspection-4
-
   def define_type
     # Define track
     @track_place = Array.new

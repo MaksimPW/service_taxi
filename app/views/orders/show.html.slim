@@ -1,0 +1,37 @@
+li = link_to 'AdminPanel', "admin/order/#{@order.id}"
+li = link_to 'Orders map', orders_path
+
+= stylesheet_link_tag 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'
+= stylesheet_link_tag 'https://unpkg.com/lrm-mapzen@1.0.5/dist/lrm-mapzen.css'
+
+h1 Order map
+div#mapid
+
+/define waypoints string
+- if !@order.car_id.nil? || !@order.take_time.nil? || !@order.begin_time.nil? || !@order.end_time.nil?
+  - @track_geo = String.new
+  - @order.define_track.each do |t|
+    - status = StatusCar.find(t)
+    - @track_geo += "L.latLng(#{status.geo_lat}, #{status.geo_lon}),"
+  - @track_geo.chop!
+
+css:
+  #mapid { height: 600px; }
+
+= javascript_include_tag 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'
+= javascript_include_tag 'https://mapzen.com/tangram/0.8/tangram.min.js'
+= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.0.0/leaflet-routing-machine.min.js'
+= javascript_include_tag 'https://unpkg.com/lrm-mapzen/dist/lrm-mapzen.js'
+
+javascript:
+  var map = L.map('mapid');//.setView([59.9386300, 30.3141300], 13);
+  var layer = Tangram.leafletLayer({
+    scene: 'https://raw.githubusercontent.com/tangrams/cinnabar-style/gh-pages/cinnabar-style.yaml',
+    attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | <a href="http://www.openstreetmap.org/about" target="_blank">&copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
+  });
+
+  var order_routing = L.Routing.control({
+    waypoints: [#{@track_geo}] });
+
+  order_routing.addTo(map);
+  layer.addTo(map);

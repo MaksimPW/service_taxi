@@ -1,0 +1,8 @@
+h1 Order Maps
+- unless @orders.empty?
+  table
+    - @orders.each do |order|
+      tr
+        td.id = order.id
+        td.map = link_to 'Map', order_path(order)
+        td.admin = link_to 'AdminPanel', "admin/order/#{order.id}"
