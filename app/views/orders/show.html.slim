@@ -25,5 +25,9 @@ javascript:
     waypoints: [
       L.latLng(59.934280, 30.335099),
       L.latLng(59.802913, 30.267839)
-    ]
+    ],
+    router: L.Routing.mapzen('#{Rails.application.secrets.mapzen_key}', {costing: 'auto'}),
+    formatter: new L.Routing.mapzenFormatter(),
+    summaryTemplate: '<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>',
+    routeWhileDragging: false
   }).addTo(map);
