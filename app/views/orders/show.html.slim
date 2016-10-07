@@ -1,4 +1,21 @@
 li = link_to 'AdminPanel', "admin/order/#{@order.id}"
 li = link_to 'Orders map', orders_path
 
+= stylesheet_link_tag 'https://unpkg.com/leaflet@1.0.1/dist/leaflet.css'
+
 h1 Order map
+div#mapid
+
+css:
+  #mapid { height: 300px; }
+
+= javascript_include_tag 'https://unpkg.com/leaflet@1.0.1/dist/leaflet.js'
+= javascript_include_tag 'https://mapzen.com/tangram/0.8/tangram.min.js'
+
+javascript:
+  var map = L.map('mapid').setView([59.9386300, 30.3141300], 13);
+  var layer = Tangram.leafletLayer({
+    scene: 'https://raw.githubusercontent.com/tangrams/cinnabar-style/gh-pages/cinnabar-style.yaml',
+    attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | <a href="http://www.openstreetmap.org/about" target="_blank">&copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
+  });
+  layer.addTo(map);
