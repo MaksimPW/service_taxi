@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  belongs_to :order_type
+  belongs_to :track_type
 
   before_save :define_geodata
 
@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
     @track = self.define_track
 
     if @track.empty? || @track.count == 1
-      return self.order_type_id = 5
+      return self.track_type_id = 5
     else
       track_first = StatusCar.find(@track.first)
       track_last = StatusCar.find(@track.last)
@@ -43,17 +43,17 @@ class Order < ActiveRecord::Base
     if @actual_distance > self.distance
         different_percent = (100 - self.distance.to_f/@actual_distance.to_f*100)
         if different_percent > Setting.first.max_diff_between_actual_track
-         return self.order_type_id = 4
+         return self.track_type_id = 4
        end
     end
 
     # Check order type
     if (@track_place[0].include? 1) && (@track_place[1].include? 4)
-      self.order_type_id = 1
+      self.track_type_id = 1
     elsif (@track_place[0].include? 4) && (@track_place[1].include? 'begin_address')
-      self.order_type_id = 2
+      self.track_type_id = 2
     elsif (@track_place[0].include? 'begin_address') && (@track_place[1].include? 'end_address')
-      self.order_type_id = 3
+      self.track_type_id = 3
     else
       false
     end
