@@ -3,8 +3,17 @@ li = link_to 'Orders map', orders_path
 
 = stylesheet_link_tag 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'
 = stylesheet_link_tag 'https://unpkg.com/lrm-mapzen@1.0.5/dist/lrm-mapzen.css'
+
 h1 Order map
 div#mapid
+
+/define waypoints string
+- if !@order.car_id.nil? || !@order.take_time.nil? || !@order.begin_time.nil? || !@order.end_time.nil?
+  - @track_geo = String.new
+  - @order.define_track.each do |t|
+    - status = StatusCar.find(t)
+    - @track_geo += "L.latLng(#{status.geo_lat}, #{status.geo_lon}),"
+  - @track_geo.chop!
 
 css:
   #mapid { height: 600px; }
@@ -21,137 +30,8 @@ javascript:
     attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | <a href="http://www.openstreetmap.org/about" target="_blank">&copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
   });
 
-  var routing  = L.Routing.control({
-    waypoints: [
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.885020, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.885020, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606),
-      L.latLng(59.885020, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.934280, 30.335099),
-      L.latLng(59.802913, 30.267839),
-      L.latLng(59.885051, 30.491524),
-      L.latLng(59.885051, 30.491540),
-      L.latLng(59.937376, 30.479851),
-      L.latLng(59.969693, 30.385094),
-      L.latLng(59.973129, 30.425606)
-    ]
-    //router: L.Routing.mapzen('#{Rails.application.secrets.mapzen_key}', {costing: 'auto'}),
-    //formatter: new L.Routing.mapzenFormatter(),
-    //summaryTemplate: '<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>',
-    //routeWhileDragging: false
-  });
+  var order_routing = L.Routing.control({
+    waypoints: [#{@track_geo}] });
 
-  routing.addTo(map);
+  order_routing.addTo(map);
   layer.addTo(map);
