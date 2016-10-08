@@ -24,5 +24,6 @@ en:
   admin:
     actions:
       map:
+        title: Map
         breadcrumb: Map
         menu: Map
