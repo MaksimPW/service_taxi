@@ -24,7 +24,7 @@ module RailsAdmin
         #Controller
         register_instance_option :controller do
           Proc.new do
-            # TODO: Add controller code for view map
+            @track = Track.find(params[:id])
           end
         end
       end
