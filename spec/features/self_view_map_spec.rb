@@ -3,6 +3,8 @@ require 'rails_helper'
 # This test is for self-view
 RSpec.feature 'Self-View map' do
   let!(:car) { create(:car) }
+  let!(:track) { create(:track) }
+  let!(:user) { create(:user) }
   context 'route for 2 waypoints' do
     let!(:order) { create(:order,
                           take_time: Time.now - 6.hours,
@@ -22,8 +24,14 @@ RSpec.feature 'Self-View map' do
                             geo_lon: order.end_lon,
                             fixed_time: 25.minutes.ago) }
 
-    scenario 'show map for self-view' do
+    scenario 'show order map for self-view' do
       visit order_path(order)
+      save_and_open_page
+    end
+
+    scenario 'show sample track map for self-view' do
+      sign_in(user)
+      visit "/admin/track/#{track.id}/map"
       save_and_open_page
     end
   end
