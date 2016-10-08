@@ -39,7 +39,11 @@ RailsAdmin.config do |config|
 
     ## With an audit adapter, you can add:
     history_index
-    history_show
+    history_show do
+      visible do
+        bindings[:abstract_model].model.to_s == "Setting"
+      end
+    end
 
     #custom
     map
