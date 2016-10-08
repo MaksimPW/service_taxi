@@ -1,5 +1,8 @@
 class Order < ActiveRecord::Base
   belongs_to :track_type
+  belongs_to :car
+  belongs_to :driver
+  has_one :track
 
   before_save :define_geodata
 

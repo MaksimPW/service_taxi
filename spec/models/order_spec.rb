@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Order, type: :model do
   it { should belong_to(:track_type) }
+  it { should belong_to(:car) }
+  it { should belong_to(:driver) }
+  it { should have_one(:track) }
 
   context '#define_geodata' do
     it 'should receive' do

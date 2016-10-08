@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Place, type: :model do
+  it { should belong_to(:place_type) }
+
   context '#geocode' do
     let(:subject) { create(:place, address: 'St. Petersburg', lon: nil, lat: nil) }
 

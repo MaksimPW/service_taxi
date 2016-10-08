@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe StatusCar, type: :model do
+  it { should belong_to(:track) }
+  it { should belong_to(:car) }
+
   context '#get_places' do
 
     let(:place_type1) { create(:place_type, id: 1) }
