@@ -19,7 +19,7 @@ RSpec.describe StatusCar, type: :model do
     end
 
     it 'return array' do
-      statuses = [in_place.id]
+      statuses = [place_type1.id]
       expect(status.get_places).to match_array(statuses)
     end
 
