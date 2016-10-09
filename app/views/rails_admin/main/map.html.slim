@@ -27,7 +27,7 @@ javascript:
   var track_geo = "#{@track_geo}";
   if (track_geo){
     var order_routing = L.Routing.control({
-      waypoints: [track_geo]
+      waypoints: [#{@track_geo}]
     });
     order_routing.addTo(map);
   }else{
