@@ -22,3 +22,4 @@ config/database.yml
 /public/uploads/
 config/secrets.yml
 public/assets/**
+.byebug_history
