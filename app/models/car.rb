@@ -26,9 +26,8 @@ class Car < ActiveRecord::Base
           status_car.track_id = track.id
           status_car.save
         end
-        ## TODO: -> FIX THIS
-        order =Order.where("take_time < ? AND end_time > ? AND car_id = ?", track.begin_time, track.end_time, track.car_id).first
-        #order = Order.where("take_time >= ? AND take_time < ? AND car_id = ?", track.begin_time, track.end_time, track.car_id).first
+
+        order = Order.where("take_time <= ? AND end_time >= ? AND car_id = ?", track.begin_time, track.end_time, track.car_id).first
         if order
           track.order_id = order.id
         end
