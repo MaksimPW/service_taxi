@@ -5,8 +5,8 @@ class Car < ActiveRecord::Base
   has_many :tracks
 
   def define_tracks(datetime_begin, datetime_end)
-    locations = StatusCar.where(car_id: self.id).where(fixed_time: datetime_begin..datetime_end)
-    orders = Order.where(car_id: self.id).where("take_time >= ? AND end_time <= ?", datetime_begin, datetime_end)
+    locations = StatusCar.where(fixed_time: datetime_begin..datetime_end, car_id: self.id)
+    orders = Order.where("take_time >= ? AND end_time <= ? AND car_id = ?", datetime_begin, datetime_end, self.id)
 
     @tracks = Array.new
 
@@ -27,7 +27,7 @@ class Car < ActiveRecord::Base
           status_car.save
         end
 
-        order = Order.where(take_time: track.begin_time..track.end_time, car_id: track.car_id).first
+        order = Order.where("take_time >= ? AND take_time < ? AND car_id = ?", track.begin_time, track.end_time, track.car_id).first
         if order
           track.order_id = order.id
         end
