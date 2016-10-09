@@ -20,4 +20,5 @@ TrackType.create(id: 1, name: 'Поездка из парка до места о
 TrackType.create(id: 2, name: 'Поездка от ожидания заказа к месту подачи')
 TrackType.create(id: 3, name: 'Поездка по заказу')
 TrackType.create(id: 4, name: 'Превышен лимит по дистанции')
-TrackType.create(id: 5, name: 'Трек один или отсутствует')
+TrackType.create(id: 5, name: 'Данных мало или они отсутствуют')
+TrackType.create(id: 6, name: 'Поездка по заказу не туда')
