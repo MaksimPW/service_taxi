@@ -83,5 +83,54 @@ RSpec.describe Track, type: :model do
         end
       end
     end
+
+    context 'inspection-7 | Поездка из парка до места ожидания первого заказа, а дальше от места ожидания первого заказа к месту подачи' do
+      let!(:order) { create(:order,
+                            take_time: '2016-10-09 12:00:00',
+                            end_time: '2016-10-09 13:00:00',
+                            begin_lat: 59.97228119,
+                            begin_lon: 30.51867306,
+                            car_id: car.id)}
+      let!(:park_place) { create(:place,
+                                 lat: 60.01588292,
+                                 lon: 30.58512479,
+                                 radius: 2,
+                                 place_type_id: 1) }
+      let!(:wait_place) { create(:place,
+                                 lat: 59.98164325,
+                                 lon: 30.51138282,
+                                 radius: 1,
+                                 place_type_id: 4) }
+      let!(:status_park) { create(:status_car,
+                                  fixed_time: '2016-10-09 10:10:00',
+                                  geo_lat: park_place.lat,
+                                  geo_lon: park_place.lon,
+                                  car_id: car.id) }
+      let!(:status_wait_place) { create(:status_car,
+                                        fixed_time: '2016-10-09 11:00:00',
+                                        geo_lat: wait_place.lat,
+                                        geo_lon: wait_place.lon,
+                                        car_id: car.id) }
+      let!(:status_track1_end) { create(:status_car,
+                                        fixed_time: '2016-10-09 11:50:00',
+                                        geo_lat: 59.97274828,
+                                        geo_lon: 30.52033603,
+                                        car_id: car.id) }
+      let!(:status_order_begin) { create(:status_car,
+                                         fixed_time: '2016-10-09 12:10:00',
+                                         geo_lat: order.begin_lat,
+                                         geo_lon: order.begin_lon,
+                                         car_id: car.id) }
+      let!(:status_order_end) { create(:status_car,
+                                       fixed_time: '2016-10-09 12:50:00',
+                                       car_id: car.id) }
+
+      it 'expected return 7' do
+        car.define_tracks('2016-10-09 10:00:00','2016-10-09 14:00:00')
+        track = Track.all[0]
+        track.define_type
+        expect(track.track_type_id).to eq 7
+      end
+    end
   end
 end

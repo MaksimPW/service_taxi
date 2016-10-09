@@ -50,8 +50,25 @@ class Track < ActiveRecord::Base
       end
     else
       # For other track
+      @date = @status_cars.first.fixed_time.to_date
+      @first_order = Order.where("take_time > ? AND car_id = ?", @date, self.car_id).first
 
-      false
+      if @first_order.take_time > @status_cars.first.fixed_time
+        if Geocoder::Calculations.distance_between([@status_cars.last.geo_lat, @status_cars.last.geo_lon],
+                                                   [@first_order.begin_lat, @first_order.begin_lon],
+                                                   units: :km) <= Setting.first.max_park_distance_after_order
+          @track_place[1] << 'begin_address'
+        end
+
+        @track_places = Array.new
+        @status_cars.each do |status_car|
+          @track_places << status_car.get_places
+        end
+
+        if (@track_place[0].include? 1) && (@track_places.flatten.include? 4) && (@track_place[1].include? 'begin_address')
+          return self.track_type_id = 7
+        end
+      end
     end
   end
 end
