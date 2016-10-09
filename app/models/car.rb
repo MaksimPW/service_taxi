@@ -21,7 +21,11 @@ class Car < ActiveRecord::Base
 
     @tracks.each do |t|
       unless t.empty?
-        Track.create(begin_time: t.first.fixed_time, end_time: t.last.fixed_time)
+        track = Track.create(begin_time: t.first.fixed_time, end_time: t.last.fixed_time)
+        t.each do |status_car|
+          status_car.track_id = track.id
+          status_car.save
+        end
       end
     end
   end
