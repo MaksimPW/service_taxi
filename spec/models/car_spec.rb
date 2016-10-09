@@ -73,7 +73,18 @@ RSpec.describe Car, type: :model do
       expect(Track.first.status_cars).to match_array(statuses)
     end
 
+    it 'track1.order should match the order' do
+      car.define_tracks('2016-10-08 04:30:00' ,'2016-11-08 04:30:00')
+      expect(Track.first.order).to eq order1
+    end
+
+    it 'track1.car should match the car' do
+      car.define_tracks('2016-10-08 04:30:00' ,'2016-11-08 04:30:00')
+      expect(Track.first.car).to eq car
+    end
+
     it 'set order.id for track in time order' do
+      car.define_tracks('2016-10-08 04:30:00' ,'2016-11-08 04:30:00')
       tracks = Track.where.not(order: nil)
       expect(tracks.count).to eq 2
     end
