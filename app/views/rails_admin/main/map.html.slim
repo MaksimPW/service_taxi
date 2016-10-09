@@ -24,9 +24,13 @@ javascript:
     scene: 'https://raw.githubusercontent.com/tangrams/cinnabar-style/gh-pages/cinnabar-style.yaml',
     attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | <a href="http://www.openstreetmap.org/about" target="_blank">&copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
   });
-  var order_routing = L.Routing.control({
-    waypoints: [#{@track_geo}]
-  });
-
-  order_routing.addTo(map);
+  var track_geo = "#{@track_geo}";
+  if (track_geo){
+    var order_routing = L.Routing.control({
+      waypoints: [track_geo]
+    });
+    order_routing.addTo(map);
+  }else{
+    map.setView([59.9386300, 30.3141300], 13);
+  }
   layer.addTo(map);
