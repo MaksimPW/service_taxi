@@ -6,6 +6,49 @@ RSpec.describe Track, type: :model do
   it { should belong_to(:car) }
   it { should have_many(:status_cars) }
 
+  context '#get_stay_tracks' do
+    let(:max_speed) { Setting.first.max_stay_speed + 1 }
+    let(:min_speed) { Setting.first.max_stay_speed - 1}
+
+    let!(:setting) { create(:setting) }
+    let!(:car) { create(:car) }
+    let!(:track) { create(:track, car_id: car.id) }
+    let!(:motion1) { create(:status_car, speed: max_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:00:00') }
+    let!(:stay1) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:05:00') }
+    let!(:stay2) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:10:00') }
+    let!(:stay3) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:15:00') }
+    let!(:stay4) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:20:00') }
+    let!(:stay5) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:25:00') }
+    let!(:stay6) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:30:00') }
+    let!(:motion2) { create(:status_car, speed: max_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:35:00') }
+    let!(:motion3) { create(:status_car, speed: max_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:40:00') }
+    let!(:motion4) { create(:status_car, speed: max_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:45:00') }
+    let!(:stay7) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:50:00') }
+    let!(:stay8) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 10:55:00') }
+    let!(:stay9) { create(:status_car, speed: min_speed, car_id: car.id, track_id: track.id, fixed_time: '2016-10-10 11:00:00') }
+
+    it 'should receive' do
+      expect(track).to receive(:get_stay_tracks)
+      track.get_stay_tracks
+    end
+
+    it 'Track.status_cars should eq StatusCar' do
+      expect(track.status_cars).to eq StatusCar.all
+    end
+
+    it 'return 2 stay tracks' do
+      expect(track.get_stay_tracks.count).to eq 2
+    end
+
+    it 'First stay track count eq 6' do
+      expect(track.get_stay_tracks[0].count).to eq 6
+    end
+
+    it 'Last stay track count eq 3' do
+      expect(track.get_stay_tracks[1].count).to eq 3
+    end
+  end
+
   context '#define_type' do
     let!(:setting) { create(:setting) }
     let(:car) { create(:car) }

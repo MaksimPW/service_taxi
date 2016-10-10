@@ -4,6 +4,29 @@ class Track < ActiveRecord::Base
   belongs_to :order
   belongs_to :track_type
 
+
+  def get_stay_tracks
+    @max_stay_speed = Setting.first.max_stay_speed
+    @stay_lines = Array.new
+    @stay_lines_index = -1
+
+    self.status_cars.each_with_index do |status, index|
+      previous_status = self.status_cars[index-1] unless index ==0
+      unless previous_status
+        if status.speed <= @max_stay_speed
+          @stay_lines[@stay_lines_index+=1] = [status]
+        end
+      else
+        if status.speed <= @max_stay_speed && previous_status.speed > @max_stay_speed
+          @stay_lines[@stay_lines_index+=1] = [status]
+        elsif status.speed <= @max_stay_speed
+          @stay_lines[@stay_lines_index] << status
+        end
+      end
+    end
+    @stay_lines
+  end
+
   def define_type
     @status_cars = self.status_cars
 
