@@ -9,6 +9,7 @@ Setting.create(
     max_rest_time: 3600,                  # seconds
     max_park_time: 25200,                 # seconds
     max_diff_geo: 0.020,                  # km
+    max_stay_speed: 10                    # km/h
 )
 
 PlaceType.create(id: 1, name: 'Парк')
