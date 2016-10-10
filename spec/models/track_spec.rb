@@ -6,6 +6,26 @@ RSpec.describe Track, type: :model do
   it { should belong_to(:car) }
   it { should have_many(:status_cars) }
 
+  context '.get_time_track' do
+    let!(:status1) { create(:status_car, fixed_time: '2016-10-10 10:05:00') }
+    let!(:status2) { create(:status_car, fixed_time: '2016-10-10 10:10:00') }
+    let!(:status3) { create(:status_car, fixed_time: '2016-10-10 10:15:00') }
+    let!(:status4) { create(:status_car, fixed_time: '2016-10-10 10:20:00') }
+    let!(:status5) { create(:status_car, fixed_time: '2016-10-10 10:25:00') }
+    let!(:status6) { create(:status_car, fixed_time: '2016-10-10 10:30:00') }
+
+    let!(:statuses) { [status1, status2, status3, status4, status5, status6] }
+
+    it 'should receive' do
+      expect(Track).to receive(:get_time_track).with(statuses)
+      Track.get_time_track(statuses)
+    end
+
+    it 'return time in seconds' do
+      expect(Track.get_time_track(statuses)).to eq 1500
+    end
+  end
+
   context '#get_stay_tracks' do
     let(:max_speed) { Setting.first.max_stay_speed + 1 }
     let(:min_speed) { Setting.first.max_stay_speed - 1}

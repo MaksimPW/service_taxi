@@ -4,6 +4,9 @@ class Track < ActiveRecord::Base
   belongs_to :order
   belongs_to :track_type
 
+  def self.get_time_track(track_statuses)
+    track_statuses.last.fixed_time - track_statuses.first.fixed_time
+  end
 
   def get_stay_tracks
     @max_stay_speed = Setting.first.max_stay_speed
