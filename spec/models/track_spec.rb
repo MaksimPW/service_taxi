@@ -307,5 +307,32 @@ RSpec.describe Track, type: :model do
         expect(track.track_type_id).to eq 12
       end
     end
+
+    context 'inspection-13 | Поездка в парк' do
+      let(:max_speed) { Setting.first.max_stay_speed + 1 }
+      let(:min_speed) { Setting.first.max_stay_speed - 1 }
+      let!(:park_place) { create(:place, lat: 59.93093, lon: 30.36157, radius: 2, place_type_id: 1) }
+      let!(:first_order) { create(:order, take_time: '2016-10-09 12:00:00', end_time: '2016-10-09 13:00:00', car_id: car.id) }
+      let!(:last_order) { create(:order,
+                            take_time: '2016-10-09 14:00:00',
+                            end_time: '2016-10-09 15:00:00',
+                            end_lat: 59.97228119,
+                            end_lon: 30.51867306,
+                            car_id: car.id) }
+      let!(:status_first_order1) { create(:status_car, fixed_time: '2016-10-09 12:10:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:status_first_order2) { create(:status_car, fixed_time: '2016-10-09 12:50:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:status_between) { create(:status_car, fixed_time: '2016-10-09 13:30:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:status_last_order1) { create(:status_car, fixed_time: '2016-10-09 14:10:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:status_last_order2) { create(:status_car, fixed_time: '2016-10-09 14:50:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:status_last1) { create(:status_car, fixed_time: '2016-10-09 15:10:00', car_id: car.id, speed: max_speed, track_id: track.id, geo_lat: last_order.end_lat, geo_lon: last_order.end_lon) }
+      let!(:status_last2) { create(:status_car, fixed_time: '2016-10-09 16:00:00', car_id: car.id, speed: max_speed, track_id: track.id, geo_lat: park_place.lat, geo_lon: park_place.lon) }
+
+      it 'expect return 13' do
+        car.define_tracks('2016-10-09 10:00:00','2016-10-09 17:00:00')
+        track = Track.last
+        track.define_type
+        expect(track.track_type_id).to eq 13
+      end
+    end
   end
 end

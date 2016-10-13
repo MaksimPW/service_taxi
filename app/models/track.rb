@@ -150,6 +150,17 @@ class Track < ActiveRecord::Base
           return self.track_type_id = 7
         end
       end
+
+      @last_order = Order.where("take_time > ? AND car_id = ?", @date, self.car_id).last
+      if @last_order.take_time < @status_cars.first.fixed_time
+        if Geocoder::Calculations.distance_between([@status_cars.first.geo_lat, @status_cars.first.geo_lon], [@last_order.end_lat, @last_order.end_lon], units: :km) <= Setting.first.max_park_distance_after_order
+          @track_place[0] << 'end_address'
+        end
+
+        if (@track_place[0].include? 'end_address') && (@track_place[1].include?(1))
+          return self.track_type_id = 13
+        end
+      end
     end
   end
 end
