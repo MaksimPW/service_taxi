@@ -123,6 +123,10 @@ class Track < ActiveRecord::Base
         if (@stay_track_place.flatten.include?(1)) && (@max_time_stay_track <= Setting.first.max_rest_time)
           return self.track_type_id = 9
         end
+
+        if (@max_time_stay_track >= Setting.first.max_rest_time_after_order) && (@max_time_stay_track <= Setting.first.max_park_time)
+          return self.track_type_id = 11
+        end
       end
 
       @date = @status_cars.first.fixed_time.to_date

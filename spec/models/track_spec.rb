@@ -148,12 +148,14 @@ RSpec.describe Track, type: :model do
     end
 
     context 'inspection-7 | Поездка из парка до места ожидания первого заказа, а дальше от места ожидания первого заказа к месту подачи' do
+      let(:max_speed) { Setting.first.max_stay_speed + 1 }
+      let(:min_speed) { Setting.first.max_stay_speed - 1 }
       let!(:order) { create(:order,
                             take_time: '2016-10-09 12:00:00',
                             end_time: '2016-10-09 13:00:00',
                             begin_lat: 59.97228119,
                             begin_lon: 30.51867306,
-                            car_id: car.id)}
+                            car_id: car.id) }
       let!(:park_place) { create(:place,
                                  lat: 60.01588292,
                                  lon: 30.58512479,
@@ -168,25 +170,30 @@ RSpec.describe Track, type: :model do
                                   fixed_time: '2016-10-09 10:10:00',
                                   geo_lat: park_place.lat,
                                   geo_lon: park_place.lon,
-                                  car_id: car.id) }
+                                  car_id: car.id,
+                                  speed: max_speed) }
       let!(:status_wait_place) { create(:status_car,
                                         fixed_time: '2016-10-09 11:00:00',
                                         geo_lat: wait_place.lat,
                                         geo_lon: wait_place.lon,
-                                        car_id: car.id) }
+                                        car_id: car.id,
+                                        speed: max_speed) }
       let!(:status_track1_end) { create(:status_car,
                                         fixed_time: '2016-10-09 11:50:00',
                                         geo_lat: 59.97274828,
                                         geo_lon: 30.52033603,
-                                        car_id: car.id) }
+                                        car_id: car.id,
+                                        speed: max_speed) }
       let!(:status_order_begin) { create(:status_car,
                                          fixed_time: '2016-10-09 12:10:00',
                                          geo_lat: order.begin_lat,
                                          geo_lon: order.begin_lon,
-                                         car_id: car.id) }
+                                         car_id: car.id,
+                                         speed: max_speed) }
       let!(:status_order_end) { create(:status_car,
                                        fixed_time: '2016-10-09 12:50:00',
-                                       car_id: car.id) }
+                                       car_id: car.id,
+                                       speed: max_speed) }
 
       it 'expected return 7' do
         car.define_tracks('2016-10-09 10:00:00','2016-10-09 14:00:00')
@@ -266,6 +273,22 @@ RSpec.describe Track, type: :model do
       it 'expected return 10' do
         track.define_type
         expect(track.track_type_id).to eq 10
+      end
+    end
+
+    context 'inspection-11 | Стоянка' do
+      let(:settings) { create(:setting, max_park_time: 25200) }
+
+      let(:min_speed) { Setting.first.max_stay_speed - 1 }
+
+      let(:track) { create(:track, car_id: car.id)}
+      let!(:status1) { create(:status_car, fixed_time: '2016-10-09 11:00:00', car_id: car.id, track_id: track.id, speed: min_speed) }
+      let!(:status2) { create(:status_car, fixed_time: '2016-10-09 15:00:00', geo_lat: 60.01588292, geo_lon: 60.01588292, car_id: car.id, track_id: track.id, speed: min_speed) }
+      let!(:status3) { create(:status_car, fixed_time: '2016-10-09 18:00:00', car_id: car.id, track_id: track.id, speed: min_speed) }
+
+      it 'expected return 11' do
+        track.define_type
+        expect(track.track_type_id).to eq 11
       end
     end
   end
