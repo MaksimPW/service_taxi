@@ -100,6 +100,20 @@ class Track < ActiveRecord::Base
             return self.track_type_id = 8
           end
         end
+
+        @stay_track_place = Array.new
+        @stay_tracks.each do |stay_track|
+
+          time_stay_track = Track.get_time_track(stay_track)
+          @max_time_stay_track = time_stay_track if time_stay_track > @max_time_stay_track
+          stay_track.each do |status|
+            @stay_track_place << status.get_places
+          end
+        end
+
+        if (@stay_track_place.flatten.include?(1)) && (@max_time_stay_track <= Setting.first.max_rest_time)
+          return self.track_type_id = 9
+        end
       end
 
       @date = @status_cars.first.fixed_time.to_date

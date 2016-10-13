@@ -233,5 +233,27 @@ RSpec.describe Track, type: :model do
         end
       end
     end
+
+    context 'inspection-9 | Поездка на отдых' do
+      let(:settings) { create(:setting, max_rest_time: 3600) }
+
+      let(:max_speed) { Setting.first.max_stay_speed + 1 }
+      let(:min_speed) { Setting.first.max_stay_speed - 1 }
+
+      let!(:track) { create(:track, car_id: car.id) }
+      let!(:park_place) { create(:place, lat: 60.01588292, lon: 30.58512479, radius: 2, place_type_id: 1) }
+      let!(:active1) { create(:status_car, fixed_time: '2016-10-09 10:00:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:active2) { create(:status_car, fixed_time: '2016-10-09 11:00:00', car_id: car.id, speed: max_speed, track_id: track.id) }
+      let!(:stay1) { create(:status_car, fixed_time: '2016-10-09 11:05:00', geo_lat: 60.01588292, geo_lon: 30.58512479, car_id: car.id, speed: min_speed, track_id: track.id) }
+      let!(:stay2) { create(:status_car, fixed_time: '2016-10-09 11:12:00', geo_lat: 60.01588292, geo_lon: 30.58512479, car_id: car.id, speed: min_speed, track_id: track.id) }
+      let!(:stay3) { create(:status_car, fixed_time: '2016-10-09 11:40:00', geo_lat: 60.01588292, geo_lon: 30.58512479, car_id: car.id, speed: min_speed, track_id: track.id) }
+      let!(:stay4) { create(:status_car, fixed_time: '2016-10-09 12:00:00', geo_lat: 60.01588292, geo_lon: 30.58512479, car_id: car.id, speed: min_speed, track_id: track.id) }
+      let!(:active3) { create(:status_car, fixed_time: '2016-10-09 12:20:00', car_id: car.id, speed: max_speed) }
+
+      it 'expected return 9' do
+        track.define_type
+        expect(track.track_type_id).to eq 9
+      end
+    end
   end
 end
