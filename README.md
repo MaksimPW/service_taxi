@@ -56,7 +56,7 @@ Content-Type: application/json
 
 `{"id"=>1, "waybill_number"=>"MyString", "car_number"=>"MyString", "creator"=>"", "driver_alias"=>"MyString", "fio"=>"Ivanov Ivan Ivanich", "created_waybill_at"=>"2016-09-16T07:27:44.000Z", "begin_road_at"=>"2016-09-16T10:00:00.000Z", "end_road_at"=>"2016-09-16T11:00:00.000Z", "created_at"=>"2016-09-22T15:13:24.268Z", "updated_at"=>"2016-09-22T15:13:24.268Z"}`
 
-## Запрос post update
+## Запрос patch update
 
 ### Задача
 
