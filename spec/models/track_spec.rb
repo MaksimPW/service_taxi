@@ -195,5 +195,43 @@ RSpec.describe Track, type: :model do
         expect(track.track_type_id).to eq 7
       end
     end
+
+    context 'inspection-8 | Ожидание между заказами' do
+      context 'Ожидание рядом с последним заказом' do
+        let!(:settings) { create(:setting, max_park_distance_after_order: 0.5, max_rest_time_after_order: 900) }
+
+        let(:max_speed) { Setting.first.max_stay_speed + 1 }
+        let(:min_speed) { Setting.first.max_stay_speed - 1 }
+
+        let!(:prev_order) { create(:order,
+                                   take_time: '2016-10-09 10:00:00',
+                                   end_time: '2016-10-09 12:00:00',
+                                   end_lat: '59.9342802',
+                                   end_lon: '30.3350986',
+                                   car_id: car.id) }
+        let!(:next_order) { create(:order,
+                                   take_time: '2016-10-09 17:00:00',
+                                   end_time: '2016-10-09 18:00:00',
+                                   car_id: car.id) }
+        let!(:status_active1) { create(:status_car, fixed_time: '2016-10-09 12:10:00', geo_lat: '59.93375295', geo_lon: '30.33825159', car_id: car.id, speed: max_speed) }
+        let!(:status_stay1) { create(:status_car, fixed_time: '2016-10-09 12:15:00', geo_lat: '59.93377445', geo_lon: '30.33919573', car_id: car.id, speed: min_speed) }
+        let!(:status_stay2) { create(:status_car, fixed_time: '2016-10-09 12:17:00', geo_lat: '59.93377445', geo_lon: '30.33919573', car_id: car.id, speed: min_speed) }
+        let!(:status_stay3) { create(:status_car, fixed_time: '2016-10-09 12:20:00', geo_lat: '59.93377445', geo_lon: '30.33919573', car_id: car.id, speed: min_speed) }
+        let!(:status_stay4) { create(:status_car, fixed_time: '2016-10-09 12:23:00', geo_lat: '59.93377445', geo_lon: '30.33919573', car_id: car.id, speed: min_speed) }
+        let!(:status_active2) { create(:status_car, fixed_time: '2016-10-09 12:40:00', car_id: car.id, speed: max_speed) }
+        let!(:status_active3) { create(:status_car, fixed_time: '2016-10-09 12:50:00', car_id: car.id, speed: max_speed) }
+        let!(:status_active4) { create(:status_car, fixed_time: '2016-10-09 13:00:00', car_id: car.id, speed: max_speed) }
+        let!(:status_active5) { create(:status_car, fixed_time: '2016-10-09 13:10:00', car_id: car.id, speed: max_speed) }
+        let!(:status_active6) { create(:status_car, fixed_time: '2016-10-09 13:20:00', car_id: car.id, speed: max_speed) }
+        let!(:status_active7) { create(:status_car, fixed_time: '2016-10-09 13:30:00', car_id: car.id, speed: max_speed) }
+
+        it 'expected return 8' do
+          car.define_tracks('2016-10-09 10:00:00','2016-10-09 14:00:00')
+          track = Track.all[0]
+          track.define_type
+          expect(track.track_type_id).to eq 8
+        end
+      end
+    end
   end
 end

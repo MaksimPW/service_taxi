@@ -76,6 +76,32 @@ class Track < ActiveRecord::Base
       end
     else
       # For other track
+
+      @stay_tracks = self.get_stay_tracks
+      if @stay_tracks
+        @max_time_stay_track = 0
+
+        @prev_order = Order.where("take_time < ? AND car_id = ?", @status_cars.first.fixed_time, self.car_id).last
+        @next_order = Order.where("take_time > ? AND car_id = ?", @status_cars.last.fixed_time, self.car_id).first
+        if @prev_order && @next_order
+          @stay_tracks.each do |stay_track|
+            time_stay_track = Track.get_time_track(stay_track)
+            @max_time_stay_track = time_stay_track if time_stay_track > @max_time_stay_track
+
+            stay_track.each do |status|
+              if Geocoder::Calculations.distance_between([status.geo_lat, status.geo_lon],
+                                                         [@prev_order.end_lat, @prev_order.end_lon],
+                                                         units: :km) <= Setting.first.max_park_distance_after_order
+                @track_place[1] << 'end_address'
+              end
+            end
+          end
+          if (@track_place[1].flatten.include? 'end_address') && (@max_time_stay_track <= Setting.first.max_rest_time_after_order)
+            return self.track_type_id = 8
+          end
+        end
+      end
+
       @date = @status_cars.first.fixed_time.to_date
       @first_order = Order.where("take_time > ? AND car_id = ?", @date, self.car_id).first
 
