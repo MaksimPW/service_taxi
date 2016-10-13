@@ -255,5 +255,18 @@ RSpec.describe Track, type: :model do
         expect(track.track_type_id).to eq 9
       end
     end
+
+    context 'inspection-10 | Поездка через АЗС' do
+      let(:track) { create(:track, car_id: car.id)}
+      let!(:gas_place) { create(:place, lat: 60.01588292, lon: 60.01588292, radius: 2, place_type_id: 3) }
+      let!(:status1) { create(:status_car, fixed_time: '2016-10-09 10:00:00', car_id: car.id, track_id: track.id) }
+      let!(:status2) { create(:status_car, fixed_time: '2016-10-09 11:00:00', geo_lat: 60.01588292, geo_lon: 60.01588292, car_id: car.id, track_id: track.id) }
+      let!(:status3) { create(:status_car, fixed_time: '2016-10-09 12:00:00', car_id: car.id, track_id: track.id) }
+
+      it 'expected return 10' do
+        track.define_type
+        expect(track.track_type_id).to eq 10
+      end
+    end
   end
 end

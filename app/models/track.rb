@@ -77,6 +77,15 @@ class Track < ActiveRecord::Base
     else
       # For other track
 
+      @status_cars_places = Array.new
+      @status_cars.each do |status|
+        @status_cars_places << status.get_places
+      end
+
+      if (@status_cars_places.flatten.include?(3))
+        return self.track_type_id = 10
+      end
+
       @stay_tracks = self.get_stay_tracks
       if @stay_tracks
         @max_time_stay_track = 0
