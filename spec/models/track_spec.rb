@@ -291,5 +291,21 @@ RSpec.describe Track, type: :model do
         expect(track.track_type_id).to eq 11
       end
     end
+
+    context 'inspection-12 | Исчерпан лимит стоянки' do
+      let(:settings) { create(:setting, max_park_time: 25200) }
+
+      let(:min_speed) { Setting.first.max_stay_speed - 1 }
+
+      let(:track) { create(:track, car_id: car.id)}
+      let!(:status1) { create(:status_car, fixed_time: '2016-10-09 9:00:00', car_id: car.id, track_id: track.id, speed: min_speed) }
+      let!(:status2) { create(:status_car, fixed_time: '2016-10-09 15:00:00', geo_lat: 60.01588292, geo_lon: 60.01588292, car_id: car.id, track_id: track.id, speed: min_speed) }
+      let!(:status3) { create(:status_car, fixed_time: '2016-10-09 18:00:00', car_id: car.id, track_id: track.id, speed: min_speed) }
+
+      it 'expected return 12' do
+        track.define_type
+        expect(track.track_type_id).to eq 12
+      end
+    end
   end
 end

@@ -126,6 +126,8 @@ class Track < ActiveRecord::Base
 
         if (@max_time_stay_track >= Setting.first.max_rest_time_after_order) && (@max_time_stay_track <= Setting.first.max_park_time)
           return self.track_type_id = 11
+        elsif @max_time_stay_track > Setting.first.max_park_time
+          return self.track_type_id = 12
         end
       end
 
