@@ -1,4 +1,6 @@
 class StatusCar < ActiveRecord::Base
+  belongs_to :track
+  belongs_to :car
 
   def get_places
     places = Place.all

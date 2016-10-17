@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  admin:
+    actions:
+      map:
+        title: Map
+        breadcrumb: Map
+        menu: Map

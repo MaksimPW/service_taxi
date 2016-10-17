@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
+  it { should belong_to(:track_type) }
+  it { should belong_to(:car) }
+  it { should belong_to(:driver) }
+  it { should have_one(:track) }
+
   context '#define_geodata' do
     it 'should receive' do
       order = Order.create(begin_address: 'Moscow', end_address: 'St. Petersburg')
@@ -61,7 +66,7 @@ RSpec.describe Order, type: :model do
 
       it 'return 1' do
         order.define_type
-        expect(order.order_type_id).to eq 1
+        expect(order.track_type_id).to eq 1
       end
     end
 
@@ -86,7 +91,7 @@ RSpec.describe Order, type: :model do
 
       it 'return 2' do
         order.define_type
-        expect(order.order_type_id).to eq 2
+        expect(order.track_type_id).to eq 2
       end
     end
 
@@ -111,7 +116,7 @@ RSpec.describe Order, type: :model do
 
       it 'return 3' do
         order.define_type
-        expect(order.order_type_id).to eq 3
+        expect(order.track_type_id).to eq 3
       end
     end
 
@@ -140,14 +145,14 @@ RSpec.describe Order, type: :model do
 
       it 'return 4' do
         order.define_type
-        expect(order.order_type_id).to eq 4
+        expect(order.track_type_id).to eq 4
       end
     end
 
     context 'inspection-5 | track one' do
       it 'return 5' do
         order.define_type
-        expect(order.order_type_id).to eq 5
+        expect(order.track_type_id).to eq 5
       end
     end
   end

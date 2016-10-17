@@ -1,3 +1,6 @@
+require Rails.root.join('lib', 'rails_admin_map.rb')
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::Map)
+
 RailsAdmin.config do |config|
 
   ### Popular gems integration
@@ -36,7 +39,14 @@ RailsAdmin.config do |config|
 
     ## With an audit adapter, you can add:
     history_index
-    history_show
+    history_show do
+      visible do
+        bindings[:abstract_model].model.to_s == "Setting"
+      end
+    end
+
+    #custom
+    map
   end
 
   config.navigation_static_label = 'Maps'

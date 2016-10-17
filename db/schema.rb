@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005011417) do
+ActiveRecord::Schema.define(version: 20161010004519) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "cars", force: :cascade do |t|
     t.string   "mark"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.datetime "updated_at",     null: false
   end
 
-  add_index "cars", ["driver_id"], name: "index_cars_on_driver_id"
+  add_index "cars", ["driver_id"], name: "index_cars_on_driver_id", using: :btree
 
   create_table "drivers", force: :cascade do |t|
     t.string   "fio"
@@ -42,7 +45,7 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.string   "scopes"
   end
 
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true
+  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
@@ -56,9 +59,9 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.string   "previous_refresh_token", default: "", null: false
   end
 
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true
+  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
     t.string   "name",                      null: false
@@ -70,13 +73,7 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.datetime "updated_at",                null: false
   end
 
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true
-
-  create_table "order_types", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "orders", force: :cascade do |t|
     t.integer  "car_id"
@@ -97,12 +94,12 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.float    "begin_lon"
     t.float    "end_lat"
     t.float    "end_lon"
-    t.integer  "order_type_id"
+    t.integer  "track_type_id"
   end
 
-  add_index "orders", ["car_id"], name: "index_orders_on_car_id"
-  add_index "orders", ["driver_id"], name: "index_orders_on_driver_id"
-  add_index "orders", ["order_type_id"], name: "index_orders_on_order_type_id"
+  add_index "orders", ["car_id"], name: "index_orders_on_car_id", using: :btree
+  add_index "orders", ["driver_id"], name: "index_orders_on_driver_id", using: :btree
+  add_index "orders", ["track_type_id"], name: "index_orders_on_track_type_id", using: :btree
 
   create_table "place_types", force: :cascade do |t|
     t.string   "name"
@@ -120,7 +117,7 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.string   "address"
   end
 
-  add_index "places", ["place_type_id"], name: "index_places_on_place_type_id"
+  add_index "places", ["place_type_id"], name: "index_places_on_place_type_id", using: :btree
 
   create_table "settings", force: :cascade do |t|
     t.float    "max_diff_between_actual_track"
@@ -131,6 +128,7 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.float    "max_diff_geo"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.float    "max_stay_speed"
   end
 
   create_table "status_cars", force: :cascade do |t|
@@ -146,9 +144,32 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.integer  "car_id"
+    t.integer  "track_id"
   end
 
-  add_index "status_cars", ["car_id"], name: "index_status_cars_on_car_id"
+  add_index "status_cars", ["car_id"], name: "index_status_cars_on_car_id", using: :btree
+  add_index "status_cars", ["track_id"], name: "index_status_cars_on_track_id", using: :btree
+
+  create_table "track_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.text     "note"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "order_id"
+    t.integer  "track_type_id"
+    t.integer  "car_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "tracks", ["car_id"], name: "index_tracks_on_car_id", using: :btree
+  add_index "tracks", ["order_id"], name: "index_tracks_on_order_id", using: :btree
+  add_index "tracks", ["track_type_id"], name: "index_tracks_on_track_type_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -165,8 +186,8 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "version_associations", force: :cascade do |t|
     t.integer "version_id"
@@ -174,22 +195,22 @@ ActiveRecord::Schema.define(version: 20161005011417) do
     t.integer "foreign_key_id"
   end
 
-  add_index "version_associations", ["foreign_key_name", "foreign_key_id"], name: "index_version_associations_on_foreign_key"
-  add_index "version_associations", ["version_id"], name: "index_version_associations_on_version_id"
+  add_index "version_associations", ["foreign_key_name", "foreign_key_id"], name: "index_version_associations_on_foreign_key", using: :btree
+  add_index "version_associations", ["version_id"], name: "index_version_associations_on_version_id", using: :btree
 
   create_table "versions", force: :cascade do |t|
-    t.string   "item_type",                         null: false
-    t.integer  "item_id",                           null: false
-    t.string   "event",                             null: false
+    t.string   "item_type",      null: false
+    t.integer  "item_id",        null: false
+    t.string   "event",          null: false
     t.string   "whodunnit"
-    t.text     "object",         limit: 1073741823
+    t.text     "object"
     t.datetime "created_at"
-    t.text     "object_changes", limit: 1073741823
+    t.text     "object_changes"
     t.integer  "transaction_id"
   end
 
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-  add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id"
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+  add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id", using: :btree
 
   create_table "waybills", force: :cascade do |t|
     t.string   "waybill_number"
