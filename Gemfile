@@ -35,6 +35,9 @@ gem 'squeel'
 gem 'rest-client'
 gem 'slim-rails'
 gem 'launchy'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
