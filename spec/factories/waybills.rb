@@ -1,5 +1,10 @@
 FactoryGirl.define do
+  sequence :waybill_id do |n|
+    "#{n}string"
+  end
+
   factory :waybill do
+    waybill_id
     waybill_number "MyString"
     car_number "MyString"
     creator ""

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010004519) do
+ActiveRecord::Schema.define(version: 20161026143800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,7 @@ ActiveRecord::Schema.define(version: 20161010004519) do
   add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id", using: :btree
 
   create_table "waybills", force: :cascade do |t|
+    t.string   "waybill_id"
     t.string   "waybill_number"
     t.string   "car_number"
     t.string   "creator"

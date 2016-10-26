@@ -8,7 +8,7 @@ class Api::V1::ApiWaybillsController < Api::V1::BaseController
   end
 
   def update
-    @waybill = Waybill.find(params[:id])
+    @waybill = Waybill.find_by_waybill_id(params[:id])
     render json: @waybill if @waybill.update(waybill_params)
   end
 
@@ -16,7 +16,7 @@ class Api::V1::ApiWaybillsController < Api::V1::BaseController
 
   def waybill_params
     params.require(:waybill).permit(
-        :id,
+        :waybill_id,
         :waybill_number,
         :car_number,
         :creator,
