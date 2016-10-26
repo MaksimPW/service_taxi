@@ -27,6 +27,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'fb'
 gem 'activerecord-fb-adapter'
 gem 'devise'
+gem 'oauth'
 gem 'doorkeeper'
 gem 'rails_admin'
 gem 'paper_trail'

@@ -148,6 +148,7 @@ GEM
     netrc (0.11.0)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
+    oauth (0.5.1)
     orm_adapter (0.5.0)
     paper_trail (5.2.2)
       activerecord (>= 3.0, < 6.0)
@@ -313,6 +314,7 @@ DEPENDENCIES
   jquery-rails
   json_spec
   launchy
+  oauth
   paper_trail
   pg
   rails (= 4.2.5)
