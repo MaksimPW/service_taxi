@@ -18,7 +18,7 @@ class Integration::Radiotaxi
     cursor.close
 
     h.each do |index, key|
-      if car = Car.find_by_id(key['zip'].to_i)
+      if car = Car.find_by(zip: key['zip'].to_i)
         car.update!(
             mark: key['mark'],
             license_number: key['license_number'],
@@ -53,7 +53,7 @@ class Integration::Radiotaxi
     cursor.close
 
     h.each do |index, key|
-      if driver = Driver.find_by_id(key['zip'].to_i)
+      if driver = Driver.find_by(zip: key['zip'].to_i)
         driver.update!(fio: key['fio'], description: key['description'], alias: key['alias'], zip: key['zip'])
       else
         Driver.create!(fio: key['fio'], description: key['description'], alias: key['alias'], zip: key['zip'])
@@ -89,8 +89,7 @@ class Integration::Radiotaxi
     cursor.close
 
     h.each do |index, key|
-      if order = Order.find_by_id(key['id'].to_i)
-        p 'update'
+      if order = Order.find_by(zip: key['zip'].to_s)
         order.update!(
             car_id: key['car_id'],
             driver_id: key['driver_id'],
@@ -104,19 +103,17 @@ class Integration::Radiotaxi
             distance: key['distance'],
         )
       else
-        p 'create'
-        Order.create!(
-            zip: key['zip'],
-            car_id: key['car_id'],
-            driver_id: key['driver_id'],
-            operator: key['operator'],
-            take_time: key['take_time'],
-            begin_time: key['begin_time'],
-            end_time: key['end_time'],
-            begin_address: key['begin_address'],
-            end_address: key['end_address'],
-            cost: key['cost'],
-            distance: key['distance'],
+        Order.create!(zip: key['zip'],
+                      car_id: key['car_id'],
+                      driver_id: key['driver_id'],
+                      operator: key['operator'],
+                      take_time: key['take_time'],
+                      begin_time: key['begin_time'],
+                      end_time: key['end_time'],
+                      begin_address: key['begin_address'],
+                      end_address: key['end_address'],
+                      cost: key['cost'],
+                      distance: key['distance']
         )
       end
     end
