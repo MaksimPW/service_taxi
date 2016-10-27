@@ -8,7 +8,7 @@ class Integration::Radiotaxi
 
     while row = cursor.fetch(:hash)
       break if row['NAME'] =~ /e 13/
-      h[@i]['id'] = row['zip']
+      h[@i]['zip'] = row['zip']
       h[@i]['mark'] = row['marka']
       h[@i]['license_number'] = row['nomer']
       h[@i]['driver_id'] = row['zip_vod']
@@ -18,7 +18,7 @@ class Integration::Radiotaxi
     cursor.close
 
     h.each do |index, key|
-      if car = Car.find_by_id(key['id'].to_i)
+      if car = Car.find_by_id(key['zip'].to_i)
         car.update!(
             mark: key['mark'],
             license_number: key['license_number'],
@@ -26,7 +26,7 @@ class Integration::Radiotaxi
         )
       else
         Car.create!(
-            id: key['id'],
+            zip: key['zip'],
             mark: key['mark'],
             license_number: key['license_number'],
             driver_id: key['driver_id']
@@ -41,10 +41,9 @@ class Integration::Radiotaxi
 
     h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
     @i = 0
-
     while row = cursor.fetch(:hash)
       break if row['NAME'] =~ /e 13/
-      h[@i]['id'] = row['zip']
+      h[@i]['zip'] = row['zip']
       h[@i]['fio'] = row['fam_long']
       h[@i]['description'] = row['dop_info']
       h[@i]['alias'] = row['pozv']
@@ -54,10 +53,10 @@ class Integration::Radiotaxi
     cursor.close
 
     h.each do |index, key|
-      if driver = Driver.find_by_id(key['id'].to_i)
-        driver.update!(fio: key['fio'], description: key['description'], alias: key['alias'])
+      if driver = Driver.find_by_id(key['zip'].to_i)
+        driver.update!(fio: key['fio'], description: key['description'], alias: key['alias'], zip: key['zip'])
       else
-        Driver.create!(fio: key['fio'], description: key['description'], alias: key['alias'])
+        Driver.create!(fio: key['fio'], description: key['description'], alias: key['alias'], zip: key['zip'])
       end
     end
   end
@@ -71,7 +70,7 @@ class Integration::Radiotaxi
 
     while row = cursor.fetch(:hash)
       break if row['NAME'] =~ /e 13/
-      h[@i]['id'] = row['zip']
+      h[@i]['zip'] = row['zip']
       h[@i]['car_id'] = row['zip_avto']
       h[@i]['driver_id'] = row['zip_vod']
       #h[@i]['status_buy'] = row['zip_avto']
@@ -107,7 +106,7 @@ class Integration::Radiotaxi
       else
         p 'create'
         Order.create!(
-            id: key['id'],
+            zip: key['zip'],
             car_id: key['car_id'],
             driver_id: key['driver_id'],
             operator: key['operator'],
