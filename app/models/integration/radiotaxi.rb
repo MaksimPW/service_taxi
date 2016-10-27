@@ -47,6 +47,7 @@ class Integration::Radiotaxi
       h[@i]['id'] = row['zip']
       h[@i]['fio'] = row['fam_long']
       h[@i]['description'] = row['dop_info']
+      h[@i]['alias'] = row['pozv']
       @i+=1
     end
 
@@ -54,9 +55,9 @@ class Integration::Radiotaxi
 
     h.each do |index, key|
       if driver = Driver.find_by_id(key['id'].to_i)
-        driver.update!(fio: key['fio'], description: key['description'])
+        driver.update!(fio: key['fio'], description: key['description'], alias: key['alias'])
       else
-        Driver.create!(fio: key['fio'], description: key['description'])
+        Driver.create!(fio: key['fio'], description: key['description'], alias: key['alias'])
       end
     end
   end
