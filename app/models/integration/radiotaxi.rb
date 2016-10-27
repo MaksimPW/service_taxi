@@ -73,7 +73,7 @@ class Integration::Radiotaxi
       break if row['NAME'] =~ /e 13/
       h[@i]['id'] = row['zip']
       h[@i]['car_id'] = row['zip_avto']
-      h[@i]['driver_id'] = row['zip_avto']
+      h[@i]['driver_id'] = row['zip_vod']
       #h[@i]['status_buy'] = row['zip_avto']
       h[@i]['operator'] = row['fio_spr']
       h[@i]['take_time'] = row['time_zak']
@@ -93,10 +93,9 @@ class Integration::Radiotaxi
       if order = Order.find_by_id(key['id'].to_i)
         p 'update'
         order.update!(
-            car_id: key['mark'],
-            driver_id: key['license_number'],
-            #status_buy
-            operator: key['driver_id'],
+            car_id: key['car_id'],
+            driver_id: key['driver_id'],
+            operator: key['operator'],
             take_time: key['take_time'],
             begin_time: key['begin_time'],
             end_time: key['end_time'],
@@ -104,16 +103,14 @@ class Integration::Radiotaxi
             end_address: key['end_address'],
             cost: key['cost'],
             distance: key['distance'],
-        #description
         )
       else
         p 'create'
         Order.create!(
             id: key['id'],
-            car_id: key['mark'],
-            driver_id: key['license_number'],
-            #status_buy
-            operator: key['driver_id'],
+            car_id: key['car_id'],
+            driver_id: key['driver_id'],
+            operator: key['operator'],
             take_time: key['take_time'],
             begin_time: key['begin_time'],
             end_time: key['end_time'],
@@ -121,7 +118,6 @@ class Integration::Radiotaxi
             end_address: key['end_address'],
             cost: key['cost'],
             distance: key['distance'],
-        #description
         )
       end
     end
