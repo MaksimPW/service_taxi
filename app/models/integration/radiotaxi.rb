@@ -36,7 +36,7 @@ class Integration::Radiotaxi
   end
 
   def self.load_drivers
-    sql = "SELECT zip, fam_long, dop_info FROM PERSONEL;"
+    sql = "SELECT zip, fam_long, dop_info, pozv FROM PERSONEL;"
     cursor = Integration::RadiotaxiDb.connection.execute(sql)
 
     h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
@@ -63,7 +63,7 @@ class Integration::Radiotaxi
   end
 
   def self.load_orders(take_date)
-    sql = "SELECT * FROM ZAKAS WHERE data LIKE '%#{take_date}%';"
+    sql = "SELECT * FROM ZAKAS WHERE time_ready LIKE '%#{take_date}%';"
     cursor = Integration::RadiotaxiDb.connection.execute(sql)
 
     h = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = {} } }
