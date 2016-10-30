@@ -58,12 +58,12 @@ class Integration::GeoritmController < ApplicationController
     # params[:to] = '2016-10-26 00:00:00'
     # params[:tzId] = 'Europe/Moscow'
 
-    params[:objectId] = JSON.parse(params[:objectId])
+    @objectId = JSON.parse(params[:objectId])
 
     @api_path = '/restapi/reports/ROUTE/json'
 
     @body_json = {
-        objectId: params[:objectId],
+        objectId: @objectId,
         from: params[:from],
         to: params[:to],
         tzId: params[:tzId]
