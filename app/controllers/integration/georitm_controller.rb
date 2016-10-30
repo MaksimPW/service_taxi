@@ -52,10 +52,13 @@ class Integration::GeoritmController < ApplicationController
 
   def get_route
     # Example:
+    # http://localhost:3000/georitm/get_route?objectId=[5514]&from=2016-10-25%2000:00:00&to=2016-10-26%2000:00:00&tzId=%22Europe/Moscow%22
     # params[:objectId] = [5514, 30236]
     # params[:from] = '2016-10-25 00:00:00'
     # params[:to] = '2016-10-26 00:00:00'
     # params[:tzId] = 'Europe/Moscow'
+
+    params[:objectId] = JSON.parse(params[:objectId])
 
     @api_path = '/restapi/reports/ROUTE/json'
 
