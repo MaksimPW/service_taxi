@@ -50,6 +50,31 @@ class Integration::GeoritmController < ApplicationController
     render json: @response
   end
 
+  def get_route
+    params[:obj_id] = '[11707]'
+    params[:from] = '25-10-2016 00:00:00'
+    params[:to] = '26-10-2016 00:00:00'
+    params[:tzId] = 'Europe/Moscow'
+
+    @api_path = '/restapi/reports/ROUTE/json'
+
+    @body_json = {
+        objectId: params[:obj_id],
+        from: params[:from],
+        to: params[:to],
+        tzId: params[:tzId]
+    }.to_json
+
+    @response = JSON.parse(post_api(@api_path, @body_json))
+
+    if session[:integration_georitm_basic_auth]
+      @response.each do |st|
+      end
+    end
+
+    render json: @response
+  end
+
   private
 
   def post_api(api_path, body_json)

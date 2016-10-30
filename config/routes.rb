@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   scope module: 'integration' do
     get 'georitm/ping' => 'georitm#ping'
     get 'georitm/init' => 'georitm#init'
-    post 'georitm/execute' => 'georitm#execute'
+    get 'georitm/execute' => 'georitm#execute'
+    get 'georitm/get_route' => 'georitm#get_route'
 
     post 'radiotaxi/cars' => 'radiotaxi#cars'
     post 'radiotaxi/drivers' => 'radiotaxi#drivers'
