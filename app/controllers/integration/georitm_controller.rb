@@ -51,15 +51,16 @@ class Integration::GeoritmController < ApplicationController
   end
 
   def get_route
-    params[:obj_id] = '[11707]'
-    params[:from] = '25-10-2016 00:00:00'
-    params[:to] = '26-10-2016 00:00:00'
-    params[:tzId] = 'Europe/Moscow'
+    # Example:
+    # params[:objectId] = [5514, 30236]
+    # params[:from] = '2016-10-25 00:00:00'
+    # params[:to] = '2016-10-26 00:00:00'
+    # params[:tzId] = 'Europe/Moscow'
 
     @api_path = '/restapi/reports/ROUTE/json'
 
     @body_json = {
-        objectId: params[:obj_id],
+        objectId: params[:objectId],
         from: params[:from],
         to: params[:to],
         tzId: params[:tzId]
@@ -68,7 +69,17 @@ class Integration::GeoritmController < ApplicationController
     @response = JSON.parse(post_api(@api_path, @body_json))
 
     if session[:integration_georitm_basic_auth]
-      @response.each do |st|
+      @response['body'].each do |body|
+        body[1]["route"].each do |st|
+          StatusCar.create!(geo_lat: st["lat"],
+                            geo_lon: st["lon"],
+                            license_number: body[1]["name"],
+                            speed: st["speed"],
+                            fixed_time:  Time.at(st["date"]).to_datetime,
+                            name: body[1]["name"],
+                            car_id: body[1]["id"],
+                            ext_id: body[1]["extId"])
+        end
       end
     end
 
