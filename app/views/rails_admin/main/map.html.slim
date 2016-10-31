@@ -1,7 +1,8 @@
 /define waypoints string
 - if !@track.car_id.nil? || !@track.begin_time.nil? || !@track.end_time.nil?
   - @track_geo = String.new
-  - @track.status_cars.each do |location|
+  = @statuses = @track.status_cars.order("fixed_time ASC")
+  - @statuses.each do |location|
     - @track_geo += "L.latLng(#{location.geo_lat}, #{location.geo_lon}),"
   - @track_geo.chop!
 
