@@ -15,7 +15,11 @@ class Inspection
     mapzen_key = Rails.application.secrets.mapzen_key
 
     limit_locations = 20
-    return false if locations.count > limit_locations
+
+    if locations.count > limit_locations
+      drob = (locations.count/21) + 2
+      locations = locations.each_slice(drob).map(&:last)
+    end
 
     @locations_json = Array.new
     @locations = Array.new

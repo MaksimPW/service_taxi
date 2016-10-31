@@ -60,7 +60,9 @@ class Track < ActiveRecord::Base
         end
       end
 
+      return puts "@order.distance nil" if @order.distance.nil?
       @actual_distance = Inspection.summary_build_route(@status_cars.pluck(:id))["length"]
+
       if @actual_distance > @order.distance
         different_percent = (100 - @order.distance.to_f/@actual_distance.to_f*100)
         if different_percent > Setting.first.max_diff_between_actual_track
