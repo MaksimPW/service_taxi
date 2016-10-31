@@ -4,7 +4,8 @@ class Order < ActiveRecord::Base
   belongs_to :driver
   has_one :track
 
-  before_save :define_geodata
+  # TODO: Рабозбраться с данными в поле адрес и добавить обработку обратно:
+  # before_save :define_geodata
 
   def define_track
     StatusCar.where(car_id: self.car_id).where(fixed_time: self.take_time..self.end_time).pluck(:id)
