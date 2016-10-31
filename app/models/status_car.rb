@@ -2,6 +2,8 @@ class StatusCar < ActiveRecord::Base
   belongs_to :track
   belongs_to :car
 
+  default_scope { order('fixed_time ASC') }
+
   def get_places
     places = Place.all
     @location_types = Array.new
