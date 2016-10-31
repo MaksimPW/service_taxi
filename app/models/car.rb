@@ -5,9 +5,8 @@ class Car < ActiveRecord::Base
   has_many :tracks
 
   def define_tracks(datetime_begin, datetime_end)
-    locations = StatusCar.where(fixed_time: datetime_begin..datetime_end, car_id: self.id)
-    orders = Order.where("take_time >= ? AND end_time <= ? AND car_id = ?", datetime_begin, datetime_end, self.id)
-
+    locations = StatusCar.where(fixed_time: datetime_begin..datetime_end).where("license_number LIKE ?", "%#{self.license_number}%")
+    orders = Order.where("take_time >= ? AND end_time <= ? AND car_id = ?", datetime_begin, datetime_end, self.zip).order("take_time ASC")
     @tracks = Array.new
 
     @interval = [datetime_begin]
@@ -21,7 +20,7 @@ class Car < ActiveRecord::Base
 
     @tracks.each do |t|
       unless t.empty?
-        track = Track.create(begin_time: t.first.fixed_time, end_time: t.last.fixed_time, car_id: self.id)
+        track = Track.create(begin_time: t.first.fixed_time, end_time: t.last.fixed_time, car_id: self.zip)
         t.each do |status_car|
           status_car.track_id = track.id
           status_car.save

@@ -78,11 +78,29 @@ class Integration::GeoritmController < ApplicationController
                             geo_lon: st["lon"],
                             license_number: body[1]["name"],
                             speed: st["speed"],
-                            fixed_time:  Time.at(st["date"]).to_datetime,
+                            fixed_time: Time.at(st["date"]).to_datetime,
                             name: body[1]["name"],
                             car_id: body[1]["id"],
                             ext_id: body[1]["extId"])
         end
+        body[1]["parks"].each do |park|
+          StatusCar.create!(geo_lat: park["lat"],
+                            geo_lon: park["lon"],
+                            license_number: body[1]["name"],
+                            speed: 0,
+                            fixed_time: Time.at(park["start"]).to_datetime,
+                            name: body[1]["name"],
+                            car_id: body[1]["id"],
+                            ext_id: body[1]["extId"])
+          StatusCar.create!(geo_lat: park["lat"],
+                            geo_lon: park["lon"],
+                            license_number: body[1]["name"],
+                            speed: 0,
+                            fixed_time: Time.at(park["end"]).to_datetime,
+                            name: body[1]["name"],
+                            car_id: body[1]["id"],
+                            ext_id: body[1]["extId"])
+         end
       end
     end
 
